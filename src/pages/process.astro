@@ -1,0 +1,58 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const phases = [
+  { num: "01", title: "Discovery", description: "We dig into your business, your customers, and your competition. No proposal until we understand what success actually looks like for you.", deliverables: ["Strategy session", "Audit & research", "Goals & KPIs"] },
+  { num: "02", title: "Strategy", description: "We translate the discovery into a plan — what we'll build, how we'll grow it, and how we'll measure it. Then we agree on it together.", deliverables: ["Roadmap", "Scope & timeline", "Budget"] },
+  { num: "03", title: "Design", description: "Brand, UX, and creative direction. We design every pixel from scratch. No templates. Ever.", deliverables: ["Visual identity", "Wireframes", "High-fidelity design"] },
+  { num: "04", title: "Build", description: "Development, content, integrations, and QA. We build with the same tools we use on our own projects — fast, modern, and maintainable.", deliverables: ["Custom development", "Content & CMS", "Testing & launch"] },
+  { num: "05", title: "Launch", description: "We don't just hand off keys. We launch with a plan — paid, organic, social, and PR — so traffic shows up on day one.", deliverables: ["Go-live execution", "Launch campaign", "Analytics setup"] },
+  { num: "06", title: "Grow", description: "The work doesn't stop at launch. We optimize, iterate, and scale every month — that's where the real returns live.", deliverables: ["Monthly reporting", "Optimization", "Ongoing growth"] },
+];
+---
+
+<BaseLayout title="Process" description="The six phases of how we work — from discovery to growth.">
+  <section class="container-xl pt-40 pb-20">
+    <div class="eyebrow mb-8">Process</div>
+    <h1 class="display-1 max-w-[16ch]">
+      <span class="split-line"><span>Six phases.</span></span>
+      <span class="split-line"><span>One <em class="font-serif italic font-normal text-[color:var(--color-accent)]">obsession</em>:</span></span>
+      <span class="split-line"><span>making it work.</span></span>
+    </h1>
+  </section>
+
+  <section class="border-t border-[color:var(--color-line)]">
+    {phases.map((phase) => (
+      <div class="border-b border-[color:var(--color-line)] py-20 lg:py-32">
+        <div class="container-xl">
+          <div class="grid grid-cols-12 gap-6">
+            <div class="col-span-12 md:col-span-1">
+              <div class="font-mono text-sm text-[color:var(--color-accent)]">{phase.num}</div>
+            </div>
+            <div class="col-span-12 md:col-span-5">
+              <h2 class="display-2 reveal">{phase.title}</h2>
+            </div>
+            <div class="col-span-12 md:col-span-6">
+              <p class="text-lg lg:text-xl text-[color:var(--color-bone-dim)] mb-8 reveal">{phase.description}</p>
+              <ul class="space-y-3">
+                {phase.deliverables.map((d) => (
+                  <li class="flex items-center gap-3 text-[color:var(--color-bone)] reveal">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[color:var(--color-accent)]"></span>
+                    {d}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    ))}
+  </section>
+
+  <section class="container-xl py-32">
+    <div class="text-center max-w-3xl mx-auto">
+      <h2 class="display-2 mb-8 reveal">Ready to start phase 01?</h2>
+      <a href="/contact" class="btn-primary">Begin discovery</a>
+    </div>
+  </section>
+</BaseLayout>

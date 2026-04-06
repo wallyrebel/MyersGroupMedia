@@ -1,0 +1,17 @@
+---
+interface Props {
+  items: string[];
+}
+const { items } = Astro.props;
+const doubled = [...items, ...items];
+---
+<div class="overflow-hidden border-y border-[color:var(--color-line)] py-8">
+  <div class="marquee">
+    {doubled.map((item) => (
+      <div class="flex items-center gap-12 px-12 whitespace-nowrap">
+        <span class="display-3 text-[color:var(--color-bone-dim)]">{item}</span>
+        <span class="text-[color:var(--color-accent)] text-3xl">✦</span>
+      </div>
+    ))}
+  </div>
+</div>

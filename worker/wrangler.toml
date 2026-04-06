@@ -1,0 +1,28 @@
+name = "mgm-autoblog"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+
+# Runs every Monday at 9:00 AM Central (14:00 UTC during CST, 14:00 UTC during CDT).
+# Note: cron triggers run in UTC. CST = UTC-6, CDT = UTC-5.
+# We use 14:00 UTC = 9 AM CST / 8 AM CDT. If you want to lock to 9 AM regardless of DST,
+# add a second trigger or use a date-aware check inside the worker.
+[triggers]
+crons = ["0 14 * * 1"]
+
+[vars]
+GITHUB_OWNER = "REPLACE_WITH_GITHUB_OWNER"
+GITHUB_REPO  = "myers-group-media"
+GITHUB_BRANCH = "main"
+BLOG_DIR = "src/content/journal"
+LEDGER_PATH = "src/content/journal/_topics-used.json"
+IMAGE_DIR = "public/blog"
+AUTHOR = "Jon Ross Myers"
+AUTOPOST_ENABLED = "true"
+DRAFT_MODE = "true"   # set to "false" once you're happy with quality
+LLM_PROVIDER = "openai"  # or "anthropic"
+
+# Set these as secrets via:
+#   wrangler secret put OPENAI_API_KEY
+#   wrangler secret put ANTHROPIC_API_KEY
+#   wrangler secret put PEXELS_API_KEY
+#   wrangler secret put GITHUB_TOKEN

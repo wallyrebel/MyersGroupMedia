@@ -1,0 +1,62 @@
+---
+import { site, navLinks, services } from "@/data/site";
+const year = new Date().getFullYear();
+---
+
+<footer class="relative border-t border-[color:var(--color-line)] mt-32">
+  <div class="container-xl py-24">
+    <div class="grid lg:grid-cols-12 gap-12">
+      <div class="lg:col-span-6">
+        <div class="eyebrow mb-6">Let's build something</div>
+        <h2 class="display-2 mb-10">
+          Ready to <em class="font-serif italic text-[color:var(--color-accent)]">grow</em>?
+        </h2>
+        <a href="/contact" class="btn-primary">
+          Start a project
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
+        </a>
+      </div>
+
+      <div class="lg:col-span-6 grid grid-cols-2 sm:grid-cols-3 gap-8">
+        <div>
+          <div class="eyebrow mb-4">Navigate</div>
+          <ul class="space-y-2">
+            {navLinks.map((l) => (
+              <li><a href={l.href} class="text-[color:var(--color-bone-dim)] hover:text-[color:var(--color-accent)] transition-colors text-sm">{l.label}</a></li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <div class="eyebrow mb-4">Services</div>
+          <ul class="space-y-2">
+            {services.map((s) => (
+              <li><a href={`/services/${s.slug}`} class="text-[color:var(--color-bone-dim)] hover:text-[color:var(--color-accent)] transition-colors text-sm">{s.title}</a></li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <div class="eyebrow mb-4">Contact</div>
+          <ul class="space-y-2 text-sm text-[color:var(--color-bone-dim)]">
+            <li><a href={`mailto:${site.email}`} class="hover:text-[color:var(--color-accent)] transition-colors">{site.email}</a></li>
+            <li>Mississippi, USA</li>
+            <li>Est. {site.founded}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hairline"></div>
+
+  <div class="container-xl py-8 flex flex-col sm:flex-row justify-between items-center gap-4 font-mono text-[0.7rem] uppercase tracking-[0.18em] text-[color:var(--color-mist)]">
+    <div>© {year} {site.name}. All rights reserved.</div>
+    <div>Founded by {site.founder}</div>
+  </div>
+
+  <!-- Massive wordmark -->
+  <div class="overflow-hidden select-none pointer-events-none">
+    <div class="text-center font-display font-medium text-[color:var(--color-ink-3)] leading-none tracking-tighter" style="font-size: clamp(4rem, 22vw, 24rem);">
+      MYERS
+    </div>
+  </div>
+</footer>

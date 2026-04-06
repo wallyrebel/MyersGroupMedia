@@ -1,0 +1,124 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("journal", ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const fmtDate = (d: Date) => d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+---
+
+<BaseLayout title={post.data.title} description={post.data.excerpt} image={post.data.image}>
+  <article>
+    <header class="container-xl pt-40 pb-16">
+      <div class="max-w-4xl">
+        <div class="flex items-center gap-4 mb-8 font-mono text-xs uppercase tracking-[0.15em] text-[color:var(--color-mist)]">
+          <span>{fmtDate(post.data.date)}</span>
+          <span class="text-[color:var(--color-line)]">/</span>
+          <span>{post.data.author}</span>
+          {post.data.category && <><span class="text-[color:var(--color-line)]">/</span><span>{post.data.category}</span></>}
+        </div>
+        <h1 class="display-2 mb-8">{post.data.title}</h1>
+        <p class="text-xl lg:text-2xl text-[color:var(--color-bone-dim)] max-w-3xl">{post.data.excerpt}</p>
+      </div>
+    </header>
+
+    {post.data.image && (
+      <div class="container-xl mb-16">
+        <div class="relative aspect-[21/9] overflow-hidden bg-[color:var(--color-ink-2)]">
+          <img src={post.data.image} alt={post.data.title} class="w-full h-full object-cover" />
+        </div>
+        {post.data.imageCredit && (
+          <div class="mt-3 font-mono text-xs uppercase tracking-[0.14em] text-[color:var(--color-mist)]">
+            {post.data.imageCreditUrl ? <a href={post.data.imageCreditUrl} target="_blank" rel="noopener" class="hover:text-[color:var(--color-accent)]">{post.data.imageCredit}</a> : post.data.imageCredit}
+          </div>
+        )}
+      </div>
+    )}
+
+    <div class="container-xl pb-32">
+      <div class="grid lg:grid-cols-12 gap-12">
+        <aside class="lg:col-span-3">
+          <div class="sticky top-32">
+            <div class="eyebrow mb-4">Tags</div>
+            <div class="flex flex-wrap gap-2">
+              {post.data.tags.map((t) => (
+                <span class="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-[color:var(--color-mist)] border border-[color:var(--color-line)] px-2 py-1 rounded-full">{t}</span>
+              ))}
+            </div>
+          </div>
+        </aside>
+        <div class="lg:col-span-9 prose-mgm max-w-3xl">
+          <Content />
+        </div>
+      </div>
+    </div>
+
+    <section class="container-xl py-24 border-t border-[color:var(--color-line)]">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
+        <div>
+          <div class="eyebrow mb-4">Keep reading</div>
+          <a href="/journal" class="display-3 hover:text-[color:var(--color-accent)] transition-colors">All journal entries →</a>
+        </div>
+        <a href="/contact" class="btn-primary">Start a project</a>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
+
+<style is:global>
+  .prose-mgm h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin: 3rem 0 1rem;
+    color: var(--color-bone);
+  }
+  .prose-mgm h3 {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2vw, 1.6rem);
+    margin: 2rem 0 0.75rem;
+    color: var(--color-bone);
+  }
+  .prose-mgm p {
+    font-size: 1.125rem;
+    line-height: 1.75;
+    color: var(--color-bone-dim);
+    margin-bottom: 1.5rem;
+  }
+  .prose-mgm a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: rgba(232, 177, 74, 0.4);
+  }
+  .prose-mgm a:hover { text-decoration-color: var(--color-accent); }
+  .prose-mgm ul, .prose-mgm ol { margin: 1.5rem 0; padding-left: 1.5rem; }
+  .prose-mgm ul li { list-style: none; position: relative; padding-left: 1.25rem; margin-bottom: 0.75rem; color: var(--color-bone-dim); font-size: 1.125rem; line-height: 1.7; }
+  .prose-mgm ul li::before { content: ""; position: absolute; left: 0; top: 0.7em; width: 8px; height: 1px; background: var(--color-accent); }
+  .prose-mgm ol li { margin-bottom: 0.75rem; color: var(--color-bone-dim); font-size: 1.125rem; line-height: 1.7; }
+  .prose-mgm blockquote {
+    border-left: 2px solid var(--color-accent);
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+    font-family: var(--font-serif), serif;
+    font-style: italic;
+    font-size: 1.4rem;
+    color: var(--color-bone);
+  }
+  .prose-mgm strong { color: var(--color-bone); font-weight: 600; }
+  .prose-mgm code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: var(--color-ink-2);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    color: var(--color-accent);
+  }
+  .prose-mgm hr { border: none; border-top: 1px solid var(--color-line); margin: 3rem 0; }
+</style>

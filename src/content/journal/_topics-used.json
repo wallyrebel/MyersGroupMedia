@@ -1,0 +1,45 @@
+{
+  "_comment": "Auto-blog ledger. The Worker reads this before generating to avoid repeating topics, angles, hooks, and examples. Each entry is appended automatically after publishing.",
+  "posts": [
+    {
+      "slug": "why-your-website-is-the-only-marketing-asset-you-actually-own",
+      "date": "2026-04-06",
+      "category": "Web Design",
+      "topic": "websites as owned assets vs rented platforms",
+      "angle": "ownership/equity framing — comparing platforms to renting and websites to owning real estate",
+      "hooks": ["doing this since 2008", "platforms come and go but websites last"],
+      "examples": ["Facebook reach throttling", "Twitter to X", "TikTok rise"],
+      "tags": ["web-design", "strategy", "branding"]
+    },
+    {
+      "slug": "the-million-follower-playbook-what-actually-builds-an-audience",
+      "date": "2026-03-30",
+      "category": "Social Media",
+      "topic": "what actually grows social audiences past a million",
+      "angle": "system over tactics — boring consistency beats viral luck",
+      "hooks": ["million followers and 100M views", "people ask me how"],
+      "examples": ["clients with viral posts that didn't convert", "compounding vs viral"],
+      "tags": ["social-media", "content", "growth"]
+    },
+    {
+      "slug": "seo-in-2026-what-changed-what-didnt-and-what-actually-works",
+      "date": "2026-03-23",
+      "category": "Digital Marketing",
+      "topic": "SEO landscape in 2026 with AI overviews and zero-click search",
+      "angle": "what changed vs what stayed the same — basics still rule",
+      "hooks": ["started SEO in 2008", "meta keywords tag era"],
+      "examples": ["AI overviews", "E-E-A-T", "local pack", "Core Web Vitals"],
+      "tags": ["seo", "search", "content"]
+    },
+    {
+      "slug": "why-most-paid-ads-fail-and-the-three-things-the-winners-do-differently",
+      "date": "2026-03-16",
+      "category": "Digital Advertising",
+      "topic": "what separates winning vs losing paid ad campaigns",
+      "angle": "offer + funnel + signal — three pillar diagnostic framework",
+      "hooks": ["tens of millions in spend", "since Facebook sidebar widget era"],
+      "examples": ["roofing inspection offer", "conversions API", "optimization event depth"],
+      "tags": ["advertising", "paid-media", "conversion"]
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { site } from "@/data/site";
+const yearsInBusiness = new Date().getFullYear() - site.founded;
+---
+
+<BaseLayout title="About" description={`Founded by ${site.founder} in ${site.founded}, ${site.name} has spent nearly two decades growing brands online.`}>
+  <section class="container-xl pt-40 pb-20">
+    <div class="eyebrow mb-8">About</div>
+    <h1 class="display-1 max-w-[16ch]">
+      <span class="split-line"><span>An agency built on</span></span>
+      <span class="split-line"><span><em class="font-serif italic font-normal text-[color:var(--color-accent)]">eighteen years</em></span></span>
+      <span class="split-line"><span>of doing the work.</span></span>
+    </h1>
+  </section>
+
+  <section class="container-xl py-24 border-t border-[color:var(--color-line)]">
+    <div class="grid lg:grid-cols-12 gap-12">
+      <div class="lg:col-span-4">
+        <div class="eyebrow sticky top-32">[ 01 ] Origin</div>
+      </div>
+      <div class="lg:col-span-8 space-y-8">
+        <p class="display-3 text-[color:var(--color-bone)] reveal">
+          Myers Group Media was founded by <em class="font-serif italic text-[color:var(--color-accent)]">{site.founder}</em> in {site.founded}.
+        </p>
+        <p class="text-lg lg:text-xl text-[color:var(--color-bone-dim)] leading-relaxed reveal">
+          For nearly twenty years, we've been doing online marketing and search engine optimization back when "SEO" was a niche skill, social media was a novelty, and most local businesses still didn't have a website. We learned the craft when the rules were being written — and we've kept rewriting them ever since.
+        </p>
+        <p class="text-lg lg:text-xl text-[color:var(--color-bone-dim)] leading-relaxed reveal">
+          We've grown brands and digital footprints to a combined audience of over <span class="text-[color:var(--color-bone)]">one million social media followers</span> and over <span class="text-[color:var(--color-bone)]">100 million social media views every month</span>. Those aren't vanity numbers. They're audiences that buy, click, share, and show up.
+        </p>
+        <p class="text-lg lg:text-xl text-[color:var(--color-bone-dim)] leading-relaxed reveal">
+          We work with local service businesses, regional media networks, hospitality brands, software startups, and everyone in between. The thread that connects them all: we don't just hand off a deliverable and disappear. We build the system, run the system, and grow the system.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-xl py-32 border-t border-[color:var(--color-line)]">
+    <div class="grid md:grid-cols-3 gap-12">
+      {site.stats.map((s) => (
+        <div class="reveal">
+          <div class="display-2 font-display text-[color:var(--color-bone)] mb-3">{s.value}</div>
+          <div class="eyebrow">{s.label}</div>
+        </div>
+      ))}
+      <div class="reveal">
+        <div class="display-2 font-display text-[color:var(--color-bone)] mb-3">{yearsInBusiness}</div>
+        <div class="eyebrow">Years and counting</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-xl py-24 border-t border-[color:var(--color-line)]">
+    <div class="grid lg:grid-cols-12 gap-12">
+      <div class="lg:col-span-4">
+        <div class="eyebrow sticky top-32">[ 02 ] How we work</div>
+      </div>
+      <div class="lg:col-span-8 space-y-12">
+        {[
+          { t: "One team, one bill", d: "Most agencies specialize in one slice. We handle web, app, software, social, ads, and SEO under one roof — so the work actually connects." },
+          { t: "Operators, not consultants", d: "We don't deliver decks and disappear. We build, run, and optimize the systems that actually move the numbers." },
+          { t: "Built for the algorithm age", d: "Every channel — search, social, paid — is governed by an algorithm. We design strategy around how those systems actually reward content." },
+          { t: "Local roots, national reach", d: "Headquartered in Mississippi, but the work and the audiences we build live everywhere." },
+        ].map((item, i) => (
+          <div class="reveal grid grid-cols-12 gap-4 pb-12 border-b border-[color:var(--color-line)]">
+            <div class="col-span-2 font-mono text-sm text-[color:var(--color-mist)]">0{i + 1}</div>
+            <div class="col-span-10">
+              <h3 class="display-3 mb-3">{item.t}</h3>
+              <p class="text-lg text-[color:var(--color-bone-dim)]">{item.d}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

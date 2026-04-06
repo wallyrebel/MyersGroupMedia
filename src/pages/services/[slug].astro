@@ -1,0 +1,64 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { services } from "@/data/site";
+
+export function getStaticPaths() {
+  return services.map((s) => ({ params: { slug: s.slug }, props: { service: s } }));
+}
+
+const { service } = Astro.props;
+const idx = services.findIndex((s) => s.slug === service.slug);
+const next = services[(idx + 1) % services.length];
+---
+
+<BaseLayout title={service.title} description={service.description}>
+  <section class="container-xl pt-40 pb-24">
+    <div class="flex items-center gap-4 mb-8">
+      <span class="font-mono text-sm text-[color:var(--color-accent)]">{service.number}</span>
+      <span class="eyebrow">Service</span>
+    </div>
+    <h1 class="display-1 max-w-[14ch] mb-12">
+      <span class="split-line"><span>{service.title}</span></span>
+    </h1>
+    <p class="display-3 max-w-3xl text-[color:var(--color-bone-dim)] reveal">{service.short}.</p>
+  </section>
+
+  <section class="container-xl py-24 border-t border-[color:var(--color-line)]">
+    <div class="grid lg:grid-cols-12 gap-12">
+      <div class="lg:col-span-4">
+        <div class="eyebrow sticky top-32">Overview</div>
+      </div>
+      <div class="lg:col-span-8">
+        <p class="text-xl lg:text-2xl text-[color:var(--color-bone)] leading-relaxed reveal">{service.description}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-xl py-24 border-t border-[color:var(--color-line)]">
+    <div class="grid lg:grid-cols-12 gap-12">
+      <div class="lg:col-span-4">
+        <div class="eyebrow sticky top-32">What you get</div>
+      </div>
+      <div class="lg:col-span-8">
+        <ul class="space-y-6">
+          {service.deliverables.map((d, i) => (
+            <li class="reveal flex items-baseline gap-6 pb-6 border-b border-[color:var(--color-line)]">
+              <span class="font-mono text-xs text-[color:var(--color-mist)]">0{i + 1}</span>
+              <span class="display-3">{d}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-xl py-24 border-t border-[color:var(--color-line)]">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
+      <div>
+        <div class="eyebrow mb-4">Up next</div>
+        <a href={`/services/${next.slug}`} class="display-2 hover:text-[color:var(--color-accent)] transition-colors">{next.title} →</a>
+      </div>
+      <a href="/contact" class="btn-primary">Start a project</a>
+    </div>
+  </section>
+</BaseLayout>
