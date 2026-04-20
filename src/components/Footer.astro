@@ -7,38 +7,53 @@ const year = new Date().getFullYear();
   <div class="container-xl py-24">
     <div class="grid lg:grid-cols-12 gap-12">
       <div class="lg:col-span-6">
-        <div class="eyebrow mb-6">Let's build something</div>
-        <h2 class="display-2 mb-10">
-          Ready to <em class="font-serif italic text-[color:var(--color-accent)]">grow</em>?
+        <div class="eyebrow mb-6 inline-flex items-center gap-3">
+          <span class="inline-block w-1.5 h-1.5 rounded-full bg-[color:var(--color-accent)]" style="box-shadow: 0 0 0 0 var(--color-accent-glow); animation: pulse 2.4s infinite;"></span>
+          Let's build something
+        </div>
+        <h2 class="display-2 mb-10 max-w-[14ch]">
+          Ready to <em class="text-[color:var(--color-accent)]">grow</em>?
         </h2>
-        <a href="/contact" class="btn-primary">
-          Start a project
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-        </a>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="/contact" class="btn-primary">
+            Start a project
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
+          </a>
+          <a href={`mailto:${site.email}`} class="btn-ghost">
+            {site.email}
+          </a>
+        </div>
       </div>
 
       <div class="lg:col-span-6 grid grid-cols-2 sm:grid-cols-3 gap-8">
         <div>
-          <div class="eyebrow mb-4">Navigate</div>
-          <ul class="space-y-2">
+          <div class="eyebrow mb-5">Navigate</div>
+          <ul class="space-y-3">
             {navLinks.map((l) => (
-              <li><a href={l.href} class="text-[color:var(--color-bone-dim)] hover:text-[color:var(--color-accent)] transition-colors text-sm">{l.label}</a></li>
+              <li><a href={l.href} class="text-[color:var(--color-bone-dim)] hover:text-[color:var(--color-accent)] transition-colors text-sm inline-flex items-center gap-2 group">
+                <span class="inline-block w-0 h-px bg-[color:var(--color-accent)] transition-all duration-500 group-hover:w-3"></span>
+                {l.label}
+              </a></li>
             ))}
           </ul>
         </div>
         <div>
-          <div class="eyebrow mb-4">Services</div>
-          <ul class="space-y-2">
+          <div class="eyebrow mb-5">Services</div>
+          <ul class="space-y-3">
             {services.map((s) => (
-              <li><a href={`/services/${s.slug}`} class="text-[color:var(--color-bone-dim)] hover:text-[color:var(--color-accent)] transition-colors text-sm">{s.title}</a></li>
+              <li><a href={`/services/${s.slug}`} class="text-[color:var(--color-bone-dim)] hover:text-[color:var(--color-accent)] transition-colors text-sm inline-flex items-center gap-2 group">
+                <span class="inline-block w-0 h-px bg-[color:var(--color-accent)] transition-all duration-500 group-hover:w-3"></span>
+                {s.title}
+              </a></li>
             ))}
           </ul>
         </div>
         <div>
-          <div class="eyebrow mb-4">Contact</div>
-          <ul class="space-y-2 text-sm text-[color:var(--color-bone-dim)]">
-            <li><a href={`mailto:${site.email}`} class="hover:text-[color:var(--color-accent)] transition-colors">{site.email}</a></li>
+          <div class="eyebrow mb-5">Contact</div>
+          <ul class="space-y-3 text-sm text-[color:var(--color-bone-dim)]">
+            <li><a href={`mailto:${site.email}`} class="hover:text-[color:var(--color-accent)] transition-colors link-underline">{site.email}</a></li>
             <li>Mississippi, USA</li>
+            <li>Mon–Fri · 9–6 CT</li>
             <li>Est. {site.founded}</li>
           </ul>
         </div>
@@ -49,14 +64,32 @@ const year = new Date().getFullYear();
   <div class="hairline"></div>
 
   <div class="container-xl py-8 flex flex-col sm:flex-row justify-between items-center gap-4 font-mono text-[0.7rem] uppercase tracking-[0.18em] text-[color:var(--color-mist)]">
-    <div>© {year} {site.name}. All rights reserved.</div>
-    <div>Founded by {site.founder}</div>
+    <div class="flex items-center gap-4">
+      <span>© {year} {site.name}</span>
+      <span class="w-px h-3 bg-[color:var(--color-line)] hidden sm:block"></span>
+      <span class="hidden sm:inline">All rights reserved</span>
+    </div>
+    <div class="flex items-center gap-4">
+      <span>Founded by {site.founder}</span>
+      <span class="w-px h-3 bg-[color:var(--color-line)]"></span>
+      <button id="footer-top" class="hover:text-[color:var(--color-accent)] transition-colors inline-flex items-center gap-2 focus-visible:outline-none">
+        Back to top
+        <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M13 13L1 1M1 1H10M1 1V10" stroke="currentColor" stroke-width="1.2"/></svg>
+      </button>
+    </div>
   </div>
 
   <!-- Massive wordmark -->
-  <div class="overflow-hidden select-none pointer-events-none">
-    <div class="text-center font-display font-medium text-[color:var(--color-ink-3)] leading-none tracking-tighter" style="font-size: clamp(4rem, 22vw, 24rem);">
+  <div class="overflow-hidden select-none pointer-events-none relative">
+    <div id="footer-wordmark" class="text-center font-display font-medium leading-none tracking-tighter relative" style="font-size: clamp(4rem, 22vw, 24rem); color: var(--color-ink-3); -webkit-text-stroke: 0;">
       MYERS
+      <span class="absolute inset-0 pointer-events-none" style="background: linear-gradient(180deg, transparent 0%, rgba(43, 127, 255, 0.14) 100%); -webkit-background-clip: text; background-clip: text; color: transparent;">MYERS</span>
     </div>
   </div>
 </footer>
+
+<script>
+  document.getElementById("footer-top")?.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+</script>

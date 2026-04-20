@@ -13,19 +13,22 @@ const featuredWork = portfolio.slice(0, 4);
     <HeroCanvas client:load />
 
     <!-- top meta strip -->
-    <div class="absolute top-28 left-0 right-0">
+    <div class="absolute top-28 left-0 right-0 z-10">
       <div class="container-xl flex justify-between items-center">
-        <div class="eyebrow">Est. {site.founded} · Mississippi · Worldwide</div>
+        <div class="flex items-center gap-3 eyebrow">
+          <span class="inline-block w-1.5 h-1.5 rounded-full bg-[color:var(--color-accent)]" style="box-shadow: 0 0 0 0 var(--color-accent-glow); animation: pulse 2.4s infinite;"></span>
+          Est. {site.founded} · Mississippi · Worldwide
+        </div>
         <div class="eyebrow hidden md:block">N 34.7° / W 88.9°</div>
       </div>
     </div>
 
-    <div class="container-xl pb-24 lg:pb-32 relative">
+    <div class="container-xl pb-24 lg:pb-32 relative z-10">
       <div class="eyebrow mb-8 reveal">A digital agency for the algorithm age</div>
       <h1 class="display-1 max-w-[18ch] mb-12">
         <span class="split-line"><span>We design,</span></span>
-        <span class="split-line"><span>build & grow</span></span>
-        <span class="split-line"><span><em class="font-serif italic font-normal text-[color:var(--color-accent)]">brands</em> that</span></span>
+        <span class="split-line"><span>build &amp; grow</span></span>
+        <span class="split-line"><span><em class="text-[color:var(--color-accent)]">brands</em> that</span></span>
         <span class="split-line"><span>dominate online.</span></span>
       </h1>
 
@@ -34,18 +37,27 @@ const featuredWork = portfolio.slice(0, 4);
           Start a project
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
         </a>
-        <a href="/work" class="btn-ghost">See our work</a>
+        <a href="/work" class="btn-ghost">
+          See our work
+          <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" stroke-width="1.4"/></svg>
+        </a>
       </div>
 
       <!-- Stats strip -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 pt-12 border-t border-[color:var(--color-line)]">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-px bg-[color:var(--color-line)] border-y border-[color:var(--color-line)] reveal stagger">
         {site.stats.map((s) => (
-          <div class="reveal">
-            <div class="display-3 font-display text-[color:var(--color-bone)]">{s.value}</div>
-            <div class="eyebrow mt-2">{s.label}</div>
+          <div class="bg-[color:var(--color-ink)] px-0 py-8 md:py-10 group">
+            <div class="display-3 font-display text-[color:var(--color-bone)] transition-colors duration-500 group-hover:text-[color:var(--color-accent)]">{s.value}</div>
+            <div class="eyebrow mt-3">{s.label}</div>
           </div>
         ))}
       </div>
+    </div>
+
+    <!-- scroll cue -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 z-10 opacity-70">
+      <span class="eyebrow text-[0.65rem]">Scroll</span>
+      <span class="block w-px h-10 bg-gradient-to-b from-[color:var(--color-bone-dim)] to-transparent"></span>
     </div>
   </section>
 
@@ -60,9 +72,9 @@ const featuredWork = portfolio.slice(0, 4);
       </div>
       <div class="lg:col-span-9">
         <h2 class="display-2 mb-12 reveal">
-          We're a full-service digital agency that has spent <em class="font-serif italic text-[color:var(--color-accent)]">eighteen years</em> figuring out how to grow brands online — and we've gotten very good at it.
+          We're a full-service digital agency that has spent <em class="text-[color:var(--color-accent)]">eighteen years</em> figuring out how to grow brands online — and we've gotten very good at it.
         </h2>
-        <p class="text-lg lg:text-xl text-[color:var(--color-bone-dim)] max-w-2xl reveal">
+        <p class="text-lg lg:text-xl text-[color:var(--color-bone-dim)] max-w-2xl reveal leading-relaxed">
           From local service businesses to statewide media networks, we build the website, run the ads, manage the socials, and write the software. One team. One bill.
         </p>
       </div>
@@ -71,12 +83,12 @@ const featuredWork = portfolio.slice(0, 4);
 
   <!-- ======================= SERVICES ======================= -->
   <section class="container-xl py-24 border-t border-[color:var(--color-line)]">
-    <div class="flex justify-between items-end mb-16">
+    <div class="flex justify-between items-end mb-16 gap-6">
       <div>
         <div class="eyebrow mb-4">[ 02 ] Capabilities</div>
-        <h2 class="display-2 max-w-[14ch]">Six services. <em class="font-serif italic text-[color:var(--color-accent)]">One</em> system.</h2>
+        <h2 class="display-2 max-w-[14ch]">Six services. <em class="text-[color:var(--color-accent)]">One</em> system.</h2>
       </div>
-      <a href="/services" class="link-arrow hidden md:inline-flex">
+      <a href="/services" class="link-arrow hidden md:inline-flex shrink-0">
         All services
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" stroke-width="1.4"/></svg>
       </a>
@@ -84,30 +96,39 @@ const featuredWork = portfolio.slice(0, 4);
 
     <div class="border-t border-[color:var(--color-line)]">
       {services.map((s) => (
-        <a href={`/services/${s.slug}`} class="group block border-b border-[color:var(--color-line)] py-8 lg:py-10 transition-colors hover:bg-[color:var(--color-ink-2)]">
+        <a href={`/services/${s.slug}`} class="group relative block border-b border-[color:var(--color-line)] py-8 lg:py-10 transition-colors duration-500 hover:bg-[color:var(--color-ink-2)]">
+          <!-- accent bar slides in -->
+          <span class="absolute left-0 top-0 bottom-0 w-px bg-[color:var(--color-accent)] origin-top scale-y-0 group-hover:scale-y-100 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"></span>
           <div class="container-xl !px-0 grid grid-cols-12 gap-4 items-center">
-            <div class="col-span-2 lg:col-span-1 font-mono text-sm text-[color:var(--color-mist)]">{s.number}</div>
+            <div class="col-span-2 lg:col-span-1 font-mono text-sm text-[color:var(--color-mist)] transition-colors duration-500 group-hover:text-[color:var(--color-accent)]">{s.number}</div>
             <div class="col-span-10 lg:col-span-5">
-              <div class="display-3 group-hover:text-[color:var(--color-accent)] transition-colors duration-500">{s.title}</div>
+              <div class="display-3 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-3 group-hover:text-[color:var(--color-accent)]">{s.title}</div>
             </div>
             <div class="hidden lg:block lg:col-span-5 text-[color:var(--color-bone-dim)]">{s.short}</div>
             <div class="hidden lg:flex lg:col-span-1 justify-end">
-              <svg width="20" height="20" viewBox="0 0 14 14" fill="none" class="transition-transform duration-500 group-hover:translate-x-2 group-hover:text-[color:var(--color-accent)]"><path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" stroke-width="1.2"/></svg>
+              <svg width="20" height="20" viewBox="0 0 14 14" fill="none" class="text-[color:var(--color-mist)] transition-all duration-500 group-hover:translate-x-2 group-hover:-translate-y-1 group-hover:text-[color:var(--color-accent)]"><path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" stroke-width="1.2"/></svg>
             </div>
           </div>
         </a>
       ))}
     </div>
+
+    <div class="md:hidden pt-10">
+      <a href="/services" class="link-arrow">
+        All services
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" stroke-width="1.4"/></svg>
+      </a>
+    </div>
   </section>
 
   <!-- ======================= WORK ======================= -->
   <section class="container-xl py-32 lg:py-48">
-    <div class="flex justify-between items-end mb-16">
+    <div class="flex justify-between items-end mb-16 gap-6">
       <div>
         <div class="eyebrow mb-4">[ 03 ] Selected work</div>
-        <h2 class="display-2 max-w-[18ch]">Brands we've <em class="font-serif italic text-[color:var(--color-accent)]">launched</em> and grown.</h2>
+        <h2 class="display-2 max-w-[18ch]">Brands we've <em class="text-[color:var(--color-accent)]">launched</em> and grown.</h2>
       </div>
-      <a href="/work" class="link-arrow hidden md:inline-flex">
+      <a href="/work" class="link-arrow hidden md:inline-flex shrink-0">
         All work
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" stroke-width="1.4"/></svg>
       </a>
@@ -116,25 +137,40 @@ const featuredWork = portfolio.slice(0, 4);
     <div class="grid md:grid-cols-2 gap-6 lg:gap-10">
       {featuredWork.map((p, i) => (
         <a href={p.url} target="_blank" rel="noopener" class={`group block reveal ${i % 2 === 1 ? "md:translate-y-16" : ""}`}>
-          <div class="aspect-[4/3] bg-[color:var(--color-ink-2)] border border-[color:var(--color-line)] overflow-hidden relative">
-            {p.image && <img src={p.image} alt={p.name} class="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" />}
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/60 opacity-90 group-hover:opacity-70 transition-opacity duration-700"></div>
-            
-            <div class="absolute top-6 left-6 right-6 flex justify-between font-mono text-[0.75rem] uppercase tracking-[0.15em] text-[color:var(--color-bone)]">
-              <span>{p.category}</span>
+          <div class="aspect-[4/3] bg-[color:var(--color-ink-2)] border border-[color:var(--color-line)] group-hover:border-[color:var(--color-accent)] overflow-hidden relative transition-all duration-700">
+            {p.image && <img src={p.image} alt={p.name} loading="lazy" class="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.06]" />}
+            <!-- legibility gradient, lighter baseline -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/40 opacity-80 group-hover:opacity-60 transition-opacity duration-700"></div>
+            <!-- subtle accent wash on hover -->
+            <div class="absolute inset-0 bg-[color:var(--color-accent)] opacity-0 group-hover:opacity-[0.06] transition-opacity duration-700 mix-blend-overlay"></div>
+
+            <div class="absolute top-6 left-6 right-6 flex justify-between font-mono text-[0.72rem] uppercase tracking-[0.15em] text-[color:var(--color-bone)]">
+              <span class="inline-flex items-center gap-2">
+                <span class="inline-block w-1 h-1 rounded-full bg-[color:var(--color-accent)]"></span>
+                {p.category}
+              </span>
               <span>{p.year}</span>
             </div>
-            
+
             <div class="absolute bottom-6 left-6 right-6">
               <div class="display-3 text-[color:var(--color-bone)] mb-2 group-hover:text-[color:var(--color-accent)] transition-colors duration-500">{p.name}</div>
               <div class="flex justify-between items-end">
-                <span class="font-mono text-[0.75rem] uppercase tracking-[0.15em] text-[color:var(--color-bone-dim)]">{p.domain}</span>
-                <svg width="24" height="24" viewBox="0 0 14 14" fill="none" class="text-[color:var(--color-bone)] transition-all duration-500 group-hover:text-[color:var(--color-accent)] group-hover:translate-x-1 group-hover:-translate-y-1"><path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" stroke-width="1.2"/></svg>
+                <span class="font-mono text-[0.72rem] uppercase tracking-[0.15em] text-[color:var(--color-bone-dim)]">{p.domain}</span>
+                <span class="inline-flex items-center justify-center w-10 h-10 rounded-full border border-[color:var(--color-bone)]/30 group-hover:border-[color:var(--color-accent)] group-hover:bg-[color:var(--color-accent)] transition-all duration-500">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="text-[color:var(--color-bone)] transition-all duration-500 group-hover:text-[color:var(--color-ink)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"><path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" stroke-width="1.4"/></svg>
+                </span>
               </div>
             </div>
           </div>
         </a>
       ))}
+    </div>
+
+    <div class="md:hidden pt-10">
+      <a href="/work" class="link-arrow">
+        All work
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" stroke-width="1.4"/></svg>
+      </a>
     </div>
   </section>
 
@@ -145,13 +181,18 @@ const featuredWork = portfolio.slice(0, 4);
         <div class="eyebrow">[ 04 ] Next move</div>
       </div>
       <div class="lg:col-span-9">
-        <h2 class="display-2 mb-12 reveal">
-          You bring the <em class="font-serif italic text-[color:var(--color-accent)]">ambition</em>. We'll bring the eighteen years of getting it right.
+        <h2 class="display-2 mb-12 reveal max-w-[20ch]">
+          You bring the <em class="text-[color:var(--color-accent)]">ambition</em>. We'll bring the eighteen years of getting it right.
         </h2>
-        <a href="/contact" class="btn-primary">
-          Let's talk
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" stroke-width="1.4"/></svg>
-        </a>
+        <div class="flex flex-col sm:flex-row gap-4 reveal">
+          <a href="/contact" class="btn-primary">
+            Let's talk
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" stroke-width="1.4"/></svg>
+          </a>
+          <a href={`mailto:${site.email}`} class="btn-ghost">
+            {site.email}
+          </a>
+        </div>
       </div>
     </div>
   </section>
