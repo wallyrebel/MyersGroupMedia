@@ -1,0 +1,80 @@
+---
+title: "The Software Trap: When Custom Tools Start Costing More Than They Save"
+date: 2026-03-02
+excerpt: "Custom software is a superpower when it's the right call and a millstone when it isn't. After nearly two decades of building and inheriting both kinds, here's the framework we use to tell which is which — before we write a single line."
+tags: ["software", "operations", "strategy"]
+category: "Software Development"
+author: "Jon Ross Myers"
+---
+
+The ugliest projects I ever walk into aren't broken websites or failed marketing campaigns. They're custom software builds — business-critical tools, built three or four years ago by someone who has since moved on, running the day-to-day of a company that no longer fully understands how they work.
+
+Half the time, the original developer is unreachable. The other half, they're still billing. Either way, leadership has learned a very expensive lesson: custom software is easy to build and hard to own.
+
+We do software development. It's one of the things we're best at. And yet the most valuable thing I do for most clients isn't writing software — it's talking them out of it.
+
+## The honeymoon vs. the marriage
+
+Every custom software project has two phases.
+
+**Phase one** is the honeymoon. It's fast, exciting, and full of obvious wins. The tool replaces a spreadsheet or a clunky off-the-shelf product. The team loves it. Someone writes a LinkedIn post about "finally investing in our tech." Productivity numbers tick up. Everybody feels like a genius.
+
+**Phase two** is the marriage. The tool is now four years old. The person who championed it left last year. The framework it was built on is two major versions out of date. Nobody dares touch it because last time somebody "just made a small change," it took down the billing system for two days. The original $60k build is now a $25k-a-year maintenance problem, and ripping it out means rebuilding a workflow a dozen people depend on.
+
+This is what I call the software trap. You didn't buy software. You hired a permanent employee who never takes vacation and also never leaves.
+
+## The three-step filter
+
+Before we scope any custom software project, we run it through three questions. If any of them comes back the wrong way, we stop and recommend something else.
+
+**1. Is there off-the-shelf software that does 80% of this?** In 2026 there is almost always something. Airtable, Monday, HubSpot, Zoho, Notion, Pipedrive, ClickUp, Google Workspace — the SaaS market has filled in every crevice. If an existing product handles 80% of what you need, building from scratch is almost never worth it. Your custom tool will cost you 10x to build and 5x a year to maintain, while the SaaS version ships new features every quarter paid for by ten thousand other customers.
+
+**2. Is this process stable enough to be codified?** The worst moment to build software for a business process is right after someone invents the process. They think they know what they want, but they've only run it three times. Six months in they realize step four should have been step two and step five doesn't exist anymore. You just built a $40k implementation of a workflow that no longer exists. If the process hasn't been running manually and unchanged for at least six months, it's not ready to be automated.
+
+**3. Is this a competitive advantage or just internal plumbing?** Custom software is worth it when it's actually part of your moat — when the way your software works *is* how you win. For everything else — CRM, time tracking, invoicing, project management, internal forms — you are almost always better served by configuring a great SaaS product than by owning your own forever.
+
+Three questions. A "no" on any of them is a signal to pause, not proceed.
+
+## The hidden cost column nobody puts in the quote
+
+When we quote a custom build, the line item clients fixate on is the initial development. They shouldn't. That's the cheapest part of owning software. The things most people forget:
+
+- **Hosting, infrastructure, and monitoring.** Every production app needs somewhere to live, backups to run, errors to be caught, uptime to be watched.
+- **Security updates.** Dependencies get CVEs. Frameworks get patched. Ignoring this is how you end up on the news.
+- **Browser and OS churn.** Mobile Safari changes. Chrome deprecates an API. Your app breaks for 20% of users on a Tuesday.
+- **Integration drift.** Every third-party API you rely on — Stripe, QuickBooks, Twilio, whatever — will change. When it does, your app breaks until someone updates it.
+- **The bus factor.** One person built this. If that person disappears, the cost to onboard a new engineer is often higher than the original build.
+
+A reasonable rule: annual maintenance costs run 15–25% of the initial build cost, forever. If you can't afford that line item for the life of the software, you can't afford the software.
+
+> Don't measure the cost of software by what it takes to build it. Measure it by what it takes to own it.
+
+## When custom is actually the answer
+
+All of that said — there are scenarios where we recommend custom development without hesitation:
+
+- **The process is the product.** Your business runs on something no SaaS tool does well, and doing it slightly better than competitors is literally your edge. Build it.
+- **SaaS pricing has gone parabolic.** Per-seat software at scale can cross the line where custom is genuinely cheaper over a 3-year window. Do the math before you renew that big contract.
+- **Data sensitivity or sovereignty requirements** make third-party tools a non-starter. This is rarer than people think, but real.
+- **You're building a product to sell,** not internal plumbing. If software is going to be your revenue, then yes — you need to own the code.
+- **You've clearly outgrown SaaS limits.** You're hitting the ceiling on rate limits, user counts, or API quotas, and the "enterprise" tier is five figures a month.
+
+Notice the pattern: these are all cases where the software is strategic, not convenient.
+
+## The smartest move we see clients make
+
+The clients who end up happiest with custom development do one thing differently than the rest. They don't start with custom software. They start with a SaaS-heavy workflow that's mostly glued together, run it for six to twelve months, and let the pain show them exactly where custom is actually needed.
+
+Then they build the *smallest possible piece* — the one workflow, the one integration, the one screen — that replaces the most painful part. Not a platform. A scalpel.
+
+Most failed custom software projects tried to be a platform on day one. Most successful ones started as a scalpel and grew from there.
+
+## What to do this week
+
+If you're currently considering a custom build, run the three-step filter honestly. Then do one more thing before you sign the SOW: write down what success looks like in year three. Not month three. Year three.
+
+If the answer is "the tool is still running, we can still change it, we still own it, and we still understand it," you're on the right track.
+
+If the answer is "I have no idea who maintains it by then" — that's the trap talking. Close the laptop. Go get a cheaper answer.
+
+We love building software. We love it even more when it's the right tool for the right problem. The most expensive code in the world is code that didn't need to exist.

@@ -1,0 +1,82 @@
+---
+title: "The App You Don't Need to Build"
+date: 2026-04-13
+excerpt: "Every founder walks in wanting an app. Most of them should walk out with a website. Here's the uncomfortable math on what native development actually costs — and the three questions that reveal whether you need an app at all."
+tags: ["app-design", "strategy", "product"]
+category: "App Design"
+author: "Jon Ross Myers"
+---
+
+Every other week someone walks into my office wanting to build an app.
+
+They're excited. They've been up late sketching screens on a notepad. They know exactly what icon it'll have. They've already decided whether it's going to be iOS-first or cross-platform. The only thing they haven't decided is which agency is lucky enough to build it.
+
+And about four out of five times, I end up talking them out of it.
+
+Not because I don't want the work. We build apps. We like building apps. But because most of the people asking for an app don't actually need one — they need a thing that looks like an app, feels like an app, and does what they think an app does. That thing, more often than not, is a website.
+
+## The sentence nobody wants to hear
+
+Native app development is expensive, slow, and unforgiving. A real-production iOS and Android app — with auth, push notifications, in-app purchases, offline state, two platform review cycles, and a year of bug-fixing baked in — starts at six figures. It stays at six figures forever, because apps don't stop being built. They get maintained, updated for new OS versions, re-approved every release cycle, and rebuilt every few years when Apple decides half your SDK is deprecated.
+
+A website costs a fraction of that, launches in weeks instead of quarters, updates instantly with no gatekeeper, and shows up on every device on earth — including the ones your app doesn't support yet.
+
+The question isn't "do I want an app." Of course you want an app. Apps are cool. The question is: **does my business have a problem that only an app can solve?**
+
+## Three questions that settle it
+
+When someone tells me they need an app, I ask three things. If they can't answer yes to at least one, we build a website.
+
+**1. Do you need hardware access?** Camera, GPS, accelerometer, Bluetooth, biometrics, local storage that persists across sessions. If your product depends on these in a deep way — not "we'd like to use the camera once" but "the camera is the product" — then yes, you need a native app. Web APIs cover a lot of this now, but the last 20% is where native still wins.
+
+**2. Do your users open it multiple times a day?** Apps earn their real estate on a home screen. If people open your thing once a month, they will never download, install, create an account for, or keep an app taking up space for your thing. They'll uninstall it inside a week. A website they can just bookmark and forget until they need it.
+
+**3. Does offline matter?** If your users are in the field, in hospitals, on planes, in rural areas with bad coverage, or anywhere connectivity isn't guaranteed, an app with a local database is worth every dollar. If they're sitting at a desk or on a couch with WiFi, it isn't.
+
+Three questions. One yes gets you an app. Zero yeses gets you a website with an "Add to Home Screen" button, and it will do 95% of what you wanted the app to do for 15% of the money.
+
+## The PWA nobody talks about
+
+Progressive Web Apps are the most underused technology in the industry. A modern PWA:
+
+- Installs to the home screen with its own icon
+- Runs full-screen with no browser UI
+- Sends push notifications (yes, on iOS too, as of late 2023)
+- Works offline with a service worker
+- Updates instantly — no App Store review, no two-week rollback window when you ship a bug
+
+It's not a "good enough" option. For most business apps — dashboards, internal tools, customer portals, content apps, loyalty apps, directories, scheduling — it's actively the right choice. You launch in weeks, iterate daily, and you don't pay Apple 30% of anything that goes through it.
+
+The only reason more companies don't build this way is because nobody sold them on it. The app shops sell apps. The web shops are trying to learn React Native. Almost nobody is loudly telling founders "you don't need either, here's the thing you actually need."
+
+> An app is a feature of your business. A website is the business.
+
+## When an app is actually the answer
+
+I want to be fair. There are real reasons to build an app. Here's when I say yes instead of no:
+
+- **The product is intrinsically mobile-first.** Uber, Instagram, TikTok, Strava. The app isn't a version of the product — the app *is* the product.
+- **Notifications are the core loop.** Re-engagement is the whole business model. Users won't come back without a push.
+- **You're monetizing in-app.** Subscriptions, in-app purchases, digital goods where being inside Apple's and Google's rails is actually a feature, not a tax.
+- **You've already validated demand with a website** and the app is a premium tier for your most engaged users.
+
+That last one is the rule I wish more founders followed. Ship a website. Get real usage. Find out who your daily-active users actually are. *Then* build them an app they'll love.
+
+## The cost of building the wrong thing
+
+Here's the real risk with an app you don't need: it's not just the money. It's the opportunity cost.
+
+While you spend nine months and $180k on an app that 400 people download and 22 open twice, your competitor is putting that same money into SEO, content, paid ads, email, and a conversion-optimized site. They're taking customers. You're doing a second beta with TestFlight.
+
+I've watched this play out more times than I can count. The founder who insisted on the app is still tweaking the onboarding flow a year later. The founder who built the website is already profitable.
+
+## What to do this week
+
+If you're in the middle of scoping an app, do two things before you sign anything:
+
+- Write down the one feature that genuinely can't work on mobile web. Be honest. If the list is empty, you have your answer.
+- Get a quote for the PWA version. Compare it against the native quote. If the delta is more than 3x and you don't have the three yeses, you just saved yourself a very expensive year.
+
+Apps are a tool. They're a great tool for the right problem. Most businesses don't have that problem.
+
+And the ones that do — they already know it.

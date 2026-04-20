@@ -2,6 +2,16 @@
   "_comment": "Auto-blog ledger. The Worker reads this before generating to avoid repeating topics, angles, hooks, and examples. Each entry is appended automatically after publishing.",
   "posts": [
     {
+      "slug": "the-app-you-dont-need-to-build",
+      "date": "2026-04-13",
+      "category": "App Design",
+      "topic": "when native apps are the wrong answer for most businesses",
+      "angle": "contrarian — most 'we need an app' requests should be websites or PWAs; three-question filter",
+      "hooks": ["four out of five I talk out of it", "doing this since 2008"],
+      "examples": ["PWAs with push notifications", "App Store 30% tax", "cost of maintenance cycles", "TestFlight founder vs profitable founder"],
+      "tags": ["app-design", "strategy", "product"]
+    },
+    {
       "slug": "why-your-website-is-the-only-marketing-asset-you-actually-own",
       "date": "2026-04-06",
       "category": "Web Design",
@@ -40,6 +50,36 @@
       "hooks": ["tens of millions in spend", "since Facebook sidebar widget era"],
       "examples": ["roofing inspection offer", "conversions API", "optimization event depth"],
       "tags": ["advertising", "paid-media", "conversion"]
+    },
+    {
+      "slug": "your-brand-isnt-your-logo",
+      "date": "2026-03-09",
+      "category": "Branding",
+      "topic": "brand is the gap between promise and delivery, not visual identity",
+      "angle": "anti-rebrand — brand is operational, not aesthetic; logos don't fix business problems",
+      "hooks": ["client called about a rebrand", "operations project with a design output"],
+      "examples": ["pizza place 22-minute delivery", "dentist no-pain promise", "the five-customer gap interview"],
+      "tags": ["branding", "strategy", "design"]
+    },
+    {
+      "slug": "the-software-trap",
+      "date": "2026-03-02",
+      "category": "Software Development",
+      "topic": "when custom software costs more than it saves; off-the-shelf vs custom",
+      "angle": "honeymoon vs marriage — three-step filter; starting with a scalpel not a platform",
+      "hooks": ["ugliest projects I walk into", "custom software as permanent employee who never leaves"],
+      "examples": ["Airtable/Monday/HubSpot SaaS ecosystem", "CVE patches", "annual maintenance 15-25%", "bus factor of one"],
+      "tags": ["software", "operations", "strategy"]
+    },
+    {
+      "slug": "the-attribution-lie",
+      "date": "2026-02-23",
+      "category": "Digital Marketing",
+      "topic": "why ad platform dashboards over-report and how to actually measure marketing",
+      "angle": "three trustworthy numbers + incrementality testing + three-layer measurement stack",
+      "hooks": ["300% of actual revenue", "18 years of running this exercise"],
+      "examples": ["view-through conversions", "iOS 14.5 modeled conversions", "pausing Meta ads for incrementality", "retargeting 12x dashboard vs 2x incremental", "post-purchase survey"],
+      "tags": ["analytics", "advertising", "strategy"]
     }
   ]
 }
