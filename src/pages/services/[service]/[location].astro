@@ -16,7 +16,7 @@ import Faq from "@/components/Faq.astro";
 import { site } from "@/data/site";
 import { services, type Service } from "@/data/services";
 import { localAreas, localIndustries, type Location } from "@/data/locations";
-import { localTitle, localHref, localMeta, localFaqs, relatedWork, rotate } from "@/lib/local";
+import { localTitle, localPageTitle, searchSentence, localHref, localMeta, localFaqs, relatedWork, rotate } from "@/lib/local";
 import { breadcrumbSchema, faqSchema, serviceSchema } from "@/lib/schema";
 
 export function getStaticPaths() {
@@ -54,7 +54,7 @@ const countyNote = loc.kind === "city" ? `${loc.name} and ${loc.county}` : loc.n
 ---
 
 <BaseLayout
-  title={`${name} in ${loc.full}`}
+  title={localPageTitle(service.slug, loc.full)}
   description={description}
   schema={[serviceSchema(service, loc, path, description), breadcrumbSchema(crumbs), faqSchema(faqs)]}
   contact={{
@@ -71,7 +71,8 @@ const countyNote = loc.kind === "city" ? `${loc.name} and ${loc.county}` : loc.n
       <div>
         <p class="eyebrow mb-3">Local to you</p>
         <h2 id="local-heading" class="h2">{name} for {loc.name} businesses</h2>
-        <p class="mt-4 text-[1.08rem]">{loc.about[1]}</p>
+        <p class="mt-4 text-[1.08rem]">{searchSentence(service.slug, loc.name, countyNote)}</p>
+        <p class="mt-4">{loc.about[1]}</p>
         <p class="mt-4">{service.intro[index % service.intro.length]}</p>
         {industries.length > 0 && (
           <>

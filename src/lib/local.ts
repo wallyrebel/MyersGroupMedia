@@ -6,9 +6,12 @@ import { site, portfolio } from "@/data/site";
 import type { Service, ServiceSlug, Faq } from "@/data/services";
 import type { Location } from "@/data/locations";
 
-/** Search-friendly service name used in local headings and titles. */
+/**
+ * Search-friendly service name used in the H1 and the start of the page title,
+ * e.g. "Website Design in Ripley, MS".
+ */
 export const localTitle: Record<ServiceSlug, string> = {
-  "web-design": "Web Design",
+  "web-design": "Website Design",
   "web-hosting": "Web Hosting",
   "app-development": "App Development",
   "it-services": "IT Services & Support",
@@ -17,6 +20,52 @@ export const localTitle: Record<ServiceSlug, string> = {
   "graphic-design": "Graphic Design",
   "custom-software": "Custom Software Development",
 };
+
+/**
+ * Second half of the page title — the other way people search for the same
+ * service. "Website Design in Ripley, MS | Web Design Company" covers both
+ * "website design" and "web design" searches.
+ */
+export const titleTail: Record<ServiceSlug, string> = {
+  "web-design": "Web Design Company",
+  "web-hosting": "Website Hosting & Domains",
+  "app-development": "Mobile App Developers",
+  "it-services": "IT Support & Managed IT",
+  "digital-marketing": "Digital Marketing Agency",
+  "social-media-marketing": "Social Media Management",
+  "graphic-design": "Logo Design & Branding",
+  "custom-software": "Software Developers",
+};
+
+/** Page title for a service in a place: "<service> in <place> | <other search phrase>". */
+export function localPageTitle(slug: ServiceSlug, place: string) {
+  // Shorter lead for the three longest names, so the whole title fits in a search result.
+  const lead: Partial<Record<ServiceSlug, string>> = {
+    "it-services": "IT Services",
+    "digital-marketing": "Marketing & SEO",
+    "custom-software": "Custom Software",
+  };
+  return `${lead[slug] ?? localTitle[slug]} in ${place} | ${titleTail[slug]}`;
+}
+
+/**
+ * One plain sentence per service that works in the other phrases people type
+ * into Google ("web designer", "IT support", "logo design"…), so each page
+ * matches those searches too. `place` is a town, a county or "North Mississippi".
+ */
+export function searchSentence(slug: ServiceSlug, place: string, area: string): string {
+  const sentences: Record<ServiceSlug, string> = {
+    "web-design": `Looking for a web designer in ${place}? We handle website design, website development and redesigns for ${area} businesses, from a simple five-page site to a full online store.`,
+    "web-hosting": `We provide website hosting, domain names and SSL for ${place} businesses, and we can move your existing site over from another web hosting company with the switch planned so it stays online.`,
+    "app-development": `We are app developers for ${place} businesses and organizations: mobile app development for iPhone and Android, plus web apps that run in any browser.`,
+    "it-services": `Need IT support in ${place}? We offer one-time fixes and ongoing managed IT services — computer and network support, business email, backups and security — for ${area} offices.`,
+    "digital-marketing": `We are a digital marketing agency serving ${place}: search engine optimization (SEO), Google Business Profile management, Google Ads and Facebook ads that put ${area} businesses in front of local customers.`,
+    "social-media-marketing": `Our social media management for ${place} businesses covers Facebook, Instagram and TikTok — content, posting, page management and ads — so you get a social media manager without hiring one.`,
+    "graphic-design": `Need a graphic designer in ${place}? We do logo design, branding, business cards, signs, flyers and social media graphics for ${area} businesses.`,
+    "custom-software": `We are software developers for ${place} businesses: custom software development, web applications, dashboards, customer portals and integrations built around how you work.`,
+  };
+  return sentences[slug];
+}
 
 /** Words that match portfolio tags to a service, for "related work". */
 const workTags: Record<ServiceSlug, string[]> = {
