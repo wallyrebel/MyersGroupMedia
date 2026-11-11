@@ -32,19 +32,20 @@ export const site = {
   hours: "Mon – Fri, 9am – 6pm CT",
   region: "North Mississippi",
 
-  // Optional — fill these in and they appear in the footer and in the
-  // structured data Google reads. Leave blank to hide.
+  // Shown in the footer and contact page, and in the structured data Google
+  // reads. Keep this EXACTLY the same as the Google Business Profile.
   address: {
-    street: "",
-    city: "",
+    street: "112 E Jefferson St",
+    city: "Ripley",
     state: "MS",
-    zip: "",
+    zip: "38663",
   },
+  // Leave any of these blank to hide it.
   social: {
-    facebook: "",
+    facebook: "https://www.facebook.com/TheMyersGroupLlc",
     instagram: "",
     linkedin: "",
-    googleBusiness: "",
+    googleBusiness: "https://www.google.com/maps?cid=608276033408870578",
   },
 
   stats: [

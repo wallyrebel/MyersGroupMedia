@@ -76,6 +76,7 @@ export function businessSchema() {
         itemOffered: { "@type": "Service", name: s.name, url: abs(`/services/${s.slug}/`) },
       })),
     },
+    ...(site.social.googleBusiness ? { hasMap: site.social.googleBusiness } : {}),
     ...(sameAs.length ? { sameAs } : {}),
   };
 }

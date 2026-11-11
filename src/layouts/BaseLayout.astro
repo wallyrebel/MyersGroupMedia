@@ -65,7 +65,7 @@ const jsonLd = [businessSchema(), websiteSchema(), ...schema];
 
     <!-- Local search signals -->
     <meta name="geo.region" content="US-MS" />
-    <meta name="geo.placename" content="North Mississippi" />
+    <meta name="geo.placename" content={site.address.city ? `${site.address.city}, Mississippi` : "North Mississippi"} />
 
     <!-- Open Graph -->
     <meta property="og:type" content={ogType} />

@@ -87,7 +87,7 @@ export const locations: Location[] = [
     blurb: "County seat of Tippah County and home of First Monday Trade Days.",
     about: [
       "Ripley is the seat of Tippah County, at the junction of Highways 15 and 4. It is known across the South for First Monday Trade Days, one of the oldest outdoor markets in the country, and for a courthouse-square downtown full of locally owned businesses.",
-      "We know Ripley well. Our work here includes RCTV19, the Cardinal Ripley community publication and The Gathering Porch — and we work with Ripley businesses that want the same attention to detail.",
+      "Ripley is home. Our office is at 112 E Jefferson St, and our work here includes RCTV19, the Cardinal Ripley community publication and The Gathering Porch — and we work with Ripley businesses that want the same attention to detail.",
     ],
     knownFor: ["First Monday Trade Days", "The courthouse square downtown", "Highways 15 and 4", "Locally owned shops and manufacturers"],
     communities: ["Blue Mountain", "Walnut", "Falkner", "Dumas", "Tiplersville"],

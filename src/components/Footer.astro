@@ -18,7 +18,7 @@ const social = [
   { href: site.social.facebook, label: "Facebook" },
   { href: site.social.instagram, label: "Instagram" },
   { href: site.social.linkedin, label: "LinkedIn" },
-  { href: site.social.googleBusiness, label: "Google" },
+  { href: site.social.googleBusiness, label: "Google Maps" },
 ].filter((s) => s.href);
 const addr = site.address;
 const footLink = "inline-block py-1.5 text-[#c5cee3] hover:text-white transition-colors";
@@ -52,7 +52,9 @@ const footLink = "inline-block py-1.5 text-[#c5cee3] hover:text-white transition
           {addr.city && (
             <li class="flex items-start gap-2.5 py-1.5">
               <Icon name="pin" size={19} class="text-brand-light mt-1" />
-              <span>{addr.street && <>{addr.street}<br /></>}{addr.city}, {addr.state} {addr.zip}</span>
+              {site.social.googleBusiness
+                ? <a href={site.social.googleBusiness} target="_blank" rel="noopener" class="hover:text-white transition-colors">{addr.street && <>{addr.street}<br /></>}{addr.city}, {addr.state} {addr.zip}</a>
+                : <span>{addr.street && <>{addr.street}<br /></>}{addr.city}, {addr.state} {addr.zip}</span>}
             </li>
           )}
         </ul>
