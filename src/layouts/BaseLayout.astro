@@ -1,24 +1,49 @@
 ---
+import "@fontsource-variable/inter";
+import "@fontsource-variable/sora";
 import "@/styles/global.css";
-import Nav from "@/components/Nav.astro";
+import interWoff2 from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url";
+import soraWoff2 from "@fontsource-variable/sora/files/sora-latin-wght-normal.woff2?url";
+import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
-import Cursor from "@/components/Cursor.astro";
+import ContactBand from "@/components/ContactBand.astro";
+import MobileBar from "@/components/MobileBar.astro";
 import { site } from "@/data/site";
+import { businessSchema, websiteSchema } from "@/lib/schema";
 
 interface Props {
-  title?: string;
-  description?: string;
+  /** Page title. The site name is added automatically unless already present. */
+  title: string;
+  description: string;
   image?: string;
+  /** Extra JSON-LD blocks for this page */
+  schema?: object[];
+  noindex?: boolean;
+  ogType?: "website" | "article";
+  /** Options for the contact section above the footer; false hides it */
+  contact?: { heading?: string; text?: string; subject?: string } | false;
 }
 
 const {
-  title = site.name,
-  description = site.description,
+  title,
+  description,
   image = "/og.jpg",
+  schema = [],
+  noindex = false,
+  ogType = "website",
+  contact = {},
 } = Astro.props;
 
-const fullTitle = title === site.name ? `${site.name} — ${site.tagline}` : `${title} — ${site.name}`;
+// Keep titles inside what Google displays: add the brand only when it fits.
+const withBrand = `${title} | ${site.name}`;
+const fullTitle = title.includes(site.name) ? title : withBrand.length <= 66 ? withBrand : title;
+// Trim long descriptions at a word boundary so they are not cut off mid-word in search results.
+const clip = (t: string, max = 160) =>
+  t.length <= max ? t : t.slice(0, t.lastIndexOf(" ", max - 1)).replace(/[\s,;:.—–-]+$/, "") + "…";
+const metaDescription = clip(description);
 const canonical = new URL(Astro.url.pathname, site.url).toString();
+const ogImage = new URL(image, site.url).toString();
+const jsonLd = [businessSchema(), websiteSchema(), ...schema];
 ---
 
 <!doctype html>
@@ -26,80 +51,124 @@ const canonical = new URL(Astro.url.pathname, site.url).toString();
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#0a0a0b" />
-    <link rel="icon" type="image/png" href="/logo.png" />
-    <link rel="canonical" href={canonical} />
-
     <title>{fullTitle}</title>
-    <meta name="description" content={description} />
+    <meta name="description" content={metaDescription} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <meta name="theme-color" content="#050a1c" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preload" href={interWoff2} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={soraWoff2} as="font" type="font/woff2" crossorigin />
+
+    <!-- Local search signals -->
+    <meta name="geo.region" content="US-MS" />
+    <meta name="geo.placename" content="North Mississippi" />
 
     <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={Astro.url} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content={canonical} />
     <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL(image, Astro.url).toString()} />
-
-    <!-- Twitter -->
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:image" content={ogImage} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={new URL(image, Astro.url).toString()} />
+    <meta name="twitter:description" content={metaDescription} />
+    <meta name="twitter:image" content={ogImage} />
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Schema.org -->
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": site.name,
-      "url": site.url,
-      "founder": site.founder,
-      "foundingDate": site.founded.toString(),
-      "description": site.description,
-    })} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    {jsonLd.map((block) => <script type="application/ld+json" set:html={JSON.stringify(block)} />)}
   </head>
-  <body class="grain">
-    <Cursor />
-    <Nav />
+  <body>
+    <a href="#main" class="skip-link">Skip to main content</a>
+    <Header />
     <main id="main">
       <slot />
     </main>
+    {contact !== false && <ContactBand {...contact} />}
     <Footer />
+    <MobileBar />
+    <div id="toast" role="status" aria-live="polite" class="fixed left-1/2 -translate-x-1/2 bottom-24 lg:bottom-8 z-[60] px-4 py-3 rounded-xl bg-navy-900 text-white font-semibold shadow-lg opacity-0 pointer-events-none transition-opacity duration-200"></div>
 
     <script>
-      // ===== Reveal on scroll =====
-      const io = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((e) => {
-            if (e.isIntersecting) {
-              e.target.classList.add("in");
-              io.unobserve(e.target);
-            }
-          });
-        },
-        { threshold: 0.12, rootMargin: "0px 0px -80px 0px" }
-      );
-      document.querySelectorAll(".reveal, .split-line").forEach((el) => io.observe(el));
+      // ── Mobile menu ───────────────────────────────────────────────
+      const menuBtn = document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+      const menu = document.getElementById("mobile-menu");
+      const setMenu = (open: boolean) => {
+        if (!menuBtn || !menu) return;
+        menu.hidden = !open;
+        menuBtn.setAttribute("aria-expanded", String(open));
+        menuBtn.querySelector<HTMLElement>("[data-menu-open-icon]")!.hidden = open;
+        menuBtn.querySelector<HTMLElement>("[data-menu-close-icon]")!.hidden = !open;
+        document.documentElement.style.overflow = open ? "hidden" : "";
+      };
+      menuBtn?.addEventListener("click", () => setMenu(menu!.hidden));
+      window.matchMedia("(min-width: 1024px)").addEventListener("change", () => setMenu(false));
 
-      // ===== Lenis smooth scroll =====
-      import("lenis").then(({ default: Lenis }) => {
-        const lenis = new Lenis({
-          duration: 1.15,
-          easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-          smoothWheel: true,
+      // ── Desktop dropdowns (work on hover and keyboard without JS;
+      //    this adds click-to-toggle and Escape-to-close) ────────────
+      const dropdowns = document.querySelectorAll<HTMLElement>("[data-dropdown]");
+      const closeAll = (except?: HTMLElement) => {
+        dropdowns.forEach((dd) => {
+          if (dd === except) return;
+          dd.removeAttribute("data-open");
+          dd.querySelector("[data-dropdown-toggle]")?.setAttribute("aria-expanded", "false");
         });
-        function raf(time: number) {
-          lenis.raf(time);
-          requestAnimationFrame(raf);
+      };
+      dropdowns.forEach((dd) => {
+        const btn = dd.querySelector<HTMLButtonElement>("[data-dropdown-toggle]");
+        btn?.addEventListener("click", () => {
+          const open = !dd.hasAttribute("data-open");
+          closeAll(dd);
+          dd.toggleAttribute("data-open", open);
+          dd.toggleAttribute("data-closed", !open);
+          btn.setAttribute("aria-expanded", String(open));
+        });
+        dd.addEventListener("mouseleave", () => dd.removeAttribute("data-closed"));
+        dd.addEventListener("focusout", (e) => {
+          if (!dd.contains(e.relatedTarget as Node)) dd.removeAttribute("data-closed");
+        });
+      });
+      document.addEventListener("click", (e) => {
+        if (!(e.target as HTMLElement).closest("[data-dropdown]")) closeAll();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key !== "Escape") return;
+        dropdowns.forEach((dd) => {
+          if (dd.matches(":hover, :focus-within, [data-open]")) dd.setAttribute("data-closed", "");
+        });
+        closeAll();
+        if (menu && !menu.hidden) {
+          setMenu(false);
+          menuBtn?.focus();
         }
-        requestAnimationFrame(raf);
+      });
+
+      // ── "Copy our email address" fallback for visitors whose
+      //    computer has no email app set up ─────────────────────────
+      const toast = document.getElementById("toast");
+      let toastTimer: number | undefined;
+      const showToast = (msg: string) => {
+        if (!toast) return;
+        toast.textContent = msg;
+        toast.style.opacity = "1";
+        window.clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(() => (toast.style.opacity = "0"), 2600);
+      };
+      document.querySelectorAll<HTMLElement>("[data-copy-email]").forEach((el) => {
+        el.addEventListener("click", async () => {
+          const address = `${el.dataset.u}@${el.dataset.d}`;
+          try {
+            await navigator.clipboard.writeText(address);
+            showToast("Email address copied");
+          } catch {
+            window.prompt("Copy our email address:", address);
+          }
+        });
       });
     </script>
   </body>

@@ -1,0 +1,60 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/PageHero.astro";
+import Icon from "@/components/Icon.astro";
+import { locations } from "@/data/locations";
+import { services } from "@/data/services";
+import { breadcrumbSchema } from "@/lib/schema";
+
+const crumbs = [
+  { name: "Home", href: "/" },
+  { name: "Areas We Serve", href: "/areas/" },
+];
+---
+
+<BaseLayout
+  title="Areas We Serve in North Mississippi"
+  description="Myers Group Media serves Corinth, Ripley, New Albany, Booneville, Tupelo, Oxford, Holly Springs, Iuka, Pontotoc, Tippah County, DeSoto County and all of North Mississippi."
+  schema={[breadcrumbSchema(crumbs)]}
+>
+  <PageHero
+    crumbs={crumbs}
+    title="Areas we serve across North Mississippi"
+    lead="We work with businesses in every corner of North Mississippi. Choose your area to see the services we offer there and how we can help."
+  />
+
+  <section class="section">
+    <div class="wrap grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {locations.map((l) => (
+        <a href={`/areas/${l.slug}/`} class="card p-6 flex flex-col gap-3 group">
+          <div class="flex items-center gap-3">
+            <span class="icon-tile"><Icon name="pin" size={24} /></span>
+            <div>
+              <h2 class="h3 group-hover:text-brand transition-colors">{l.full}</h2>
+              {l.kind === "city" && <p class="text-[0.88rem] text-muted">{l.county}</p>}
+            </div>
+          </div>
+          <p class="text-[0.98rem]">{l.blurb}</p>
+          <p class="text-[0.9rem] text-muted">Including {l.communities.slice(0, 4).join(", ")}</p>
+          <span class="mt-auto pt-1 inline-flex items-center gap-1.5 font-semibold text-brand text-[0.95rem]">
+            Services in {l.name} <Icon name="arrow" size={17} class="transition-transform group-hover:translate-x-1" />
+          </span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="section bg-surface" aria-labelledby="svc-heading">
+    <div class="wrap">
+      <h2 id="svc-heading" class="h2 max-w-2xl">Not on the list? We probably still serve you.</h2>
+      <p class="mt-4 max-w-2xl">
+        Much of our work is done remotely, so we help businesses throughout Mississippi and beyond. Call or email and ask.
+      </p>
+      <ul class="mt-7 flex flex-wrap gap-2.5">
+        {services.map((s) => (
+          <li><a href={`/services/${s.slug}/`} class="chip"><Icon name={s.icon} size={16} class="text-brand" />{s.name}</a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

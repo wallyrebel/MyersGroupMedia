@@ -1,0 +1,209 @@
+---
+import Icon from "@/components/Icon.astro";
+import Logo from "@/components/Logo.astro";
+import { site, mailto } from "@/data/site";
+import { services } from "@/data/services";
+import { locations } from "@/data/locations";
+
+const path = Astro.url.pathname;
+const isActive = (href: string) => (href === "/" ? path === "/" : path.startsWith(href));
+const links = [
+  { href: "/work/", label: "Our Work" },
+  { href: "/about/", label: "About" },
+  { href: "/journal/", label: "Blog" },
+  { href: "/contact/", label: "Contact" },
+];
+const navLink = "inline-flex items-center gap-1.5 px-3 py-2 rounded-lg font-semibold text-[0.97rem] text-ink hover:text-brand hover:bg-brand-50 transition-colors cursor-pointer";
+---
+
+<header class="sticky top-0 z-50 bg-white/92 backdrop-blur-md border-b border-line" data-header>
+  <div class="wrap flex items-center justify-between gap-4 h-[4.5rem]">
+    <a href="/" aria-label={`${site.name} — home`} class="shrink-0">
+      <Logo />
+    </a>
+
+    <!-- Desktop navigation -->
+    <nav class="hidden lg:flex items-center gap-0.5" aria-label="Main">
+      <div class="nav-dd relative" data-dropdown>
+        <button type="button" class={navLink} aria-expanded="false" aria-controls="dd-services" data-dropdown-toggle>
+          Services <Icon name="chevron" size={16} class="dd-chevron" />
+        </button>
+        <div id="dd-services" class="dd-panel w-[44rem] -left-40">
+          <ul class="grid grid-cols-2 gap-1">
+            {services.map((s) => (
+              <li>
+                <a href={`/services/${s.slug}/`} class="flex gap-3 p-3 rounded-xl hover:bg-brand-50 transition-colors group">
+                  <span class="icon-tile !w-10 !h-10"><Icon name={s.icon} size={20} /></span>
+                  <span>
+                    <span class="block font-display font-bold text-ink group-hover:text-brand text-[0.98rem]">{s.name}</span>
+                    <span class="block text-[0.86rem] leading-snug text-muted">{s.short}</span>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <a href="/services/" class="mt-2 flex items-center justify-center gap-2 p-3 rounded-xl bg-surface font-semibold text-brand hover:bg-brand-50 transition-colors">
+            See all services <Icon name="arrow" size={17} />
+          </a>
+        </div>
+      </div>
+
+      <div class="nav-dd relative" data-dropdown>
+        <button type="button" class={navLink} aria-expanded="false" aria-controls="dd-areas" data-dropdown-toggle>
+          Areas We Serve <Icon name="chevron" size={16} class="dd-chevron" />
+        </button>
+        <div id="dd-areas" class="dd-panel w-[30rem] -left-24">
+          <ul class="grid grid-cols-2 gap-0.5">
+            {locations.map((l) => (
+              <li>
+                <a href={`/areas/${l.slug}/`} class="flex items-center gap-2 px-3 py-2.5 rounded-lg font-semibold text-ink hover:bg-brand-50 hover:text-brand transition-colors text-[0.96rem]">
+                  <Icon name="pin" size={16} class="text-brand shrink-0" />
+                  {l.full}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <a href="/areas/" class="mt-2 flex items-center justify-center gap-2 p-3 rounded-xl bg-surface font-semibold text-brand hover:bg-brand-50 transition-colors">
+            All service areas <Icon name="arrow" size={17} />
+          </a>
+        </div>
+      </div>
+
+      {links.map((l) => (
+        <a href={l.href} class={navLink} aria-current={isActive(l.href) ? "page" : undefined}>{l.label}</a>
+      ))}
+    </nav>
+
+    <!-- Desktop contact -->
+    <div class="hidden lg:flex items-center gap-3 shrink-0">
+      <a href={site.phoneHref} class="hidden xl:inline-flex items-center gap-2 font-display font-bold text-ink hover:text-brand transition-colors px-2 py-2" data-cta="call">
+        <Icon name="call" size={19} class="text-brand" />
+        {site.phone}
+      </a>
+      <a href={site.phoneHref} class="xl:hidden btn btn-outline btn-sm" data-cta="call">
+        <Icon name="call" size={18} />
+        <span>{site.phone}</span>
+      </a>
+      <a href={mailto()} class="btn btn-primary btn-sm" data-cta="email">
+        <Icon name="mail" size={18} />
+        <span>Email us</span>
+      </a>
+    </div>
+
+    <!-- Mobile controls -->
+    <div class="lg:hidden flex items-center gap-2">
+      <a href={site.phoneHref} class="btn btn-outline btn-sm !px-3" aria-label={`Call ${site.phone}`} data-cta="call">
+        <Icon name="call" size={20} />
+      </a>
+      <button type="button" class="btn btn-dark btn-sm !px-3.5" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+        <span data-menu-open-icon><Icon name="menu" size={21} /></span>
+        <span data-menu-close-icon hidden><Icon name="close" size={21} /></span>
+        <span>Menu</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="lg:hidden border-t border-line bg-white max-h-[calc(100dvh-4.5rem)] overflow-y-auto" hidden>
+    <nav class="wrap py-4 pb-28" aria-label="Mobile">
+      <details class="mobile-group">
+        <summary>Services <Icon name="chevron" size={20} /></summary>
+        <ul class="pb-2">
+          {services.map((s) => (
+            <li>
+              <a href={`/services/${s.slug}/`} class="flex items-center gap-3 px-2 py-3 font-semibold text-ink">
+                <span class="icon-tile !w-9 !h-9"><Icon name={s.icon} size={18} /></span>
+                {s.name}
+              </a>
+            </li>
+          ))}
+          <li><a href="/services/" class="block px-2 py-3 font-semibold text-brand">See all services →</a></li>
+        </ul>
+      </details>
+      <details class="mobile-group">
+        <summary>Areas We Serve <Icon name="chevron" size={20} /></summary>
+        <ul class="pb-2 grid grid-cols-2">
+          {locations.map((l) => (
+            <li><a href={`/areas/${l.slug}/`} class="block px-2 py-3 font-semibold text-ink">{l.full}</a></li>
+          ))}
+        </ul>
+      </details>
+      {links.map((l) => (
+        <a href={l.href} class="mobile-link" aria-current={isActive(l.href) ? "page" : undefined}>{l.label}</a>
+      ))}
+      <a href="/process/" class="mobile-link">How We Work</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  [aria-current="page"] {
+    color: var(--color-brand);
+  }
+  .dd-panel {
+    position: absolute;
+    top: calc(100% + 0.6rem);
+    background: #fff;
+    border: 1px solid var(--color-line);
+    border-radius: 1.1rem;
+    box-shadow: var(--shadow-lift);
+    padding: 0.6rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+  }
+  /* invisible bridge so the menu does not close while the mouse travels to it */
+  .dd-panel::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -0.8rem;
+    height: 0.8rem;
+  }
+  .nav-dd:hover .dd-panel,
+  .nav-dd:focus-within .dd-panel,
+  .nav-dd[data-open] .dd-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+  .nav-dd[data-closed] .dd-panel {
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
+  .nav-dd:hover :global(.dd-chevron),
+  .nav-dd[data-open] :global(.dd-chevron) {
+    transform: rotate(180deg);
+  }
+  :global(.dd-chevron) {
+    transition: transform 0.15s ease;
+  }
+  .mobile-group {
+    border-bottom: 1px solid var(--color-line);
+  }
+  .mobile-group summary,
+  .mobile-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 3.5rem;
+    padding: 0.5rem 0.5rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--color-ink);
+    cursor: pointer;
+    list-style: none;
+  }
+  .mobile-link {
+    border-bottom: 1px solid var(--color-line);
+  }
+  .mobile-group summary::-webkit-details-marker {
+    display: none;
+  }
+  .mobile-group[open] summary :global(svg) {
+    transform: rotate(180deg);
+  }
+</style>

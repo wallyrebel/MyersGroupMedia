@@ -1,0 +1,17 @@
+# Old service URLs → new ones (keeps existing Google rankings and links working)
+/services/app-design                 /services/app-development/         301
+/services/app-design/                /services/app-development/         301
+/services/social-media-management    /services/social-media-marketing/  301
+/services/social-media-management/   /services/social-media-marketing/  301
+/services/software-development       /services/custom-software/         301
+/services/software-development/      /services/custom-software/         301
+/services/digital-advertising        /services/digital-marketing/       301
+/services/digital-advertising/       /services/digital-marketing/       301
+
+# Friendly shortcuts
+/blog          /journal/   301
+/blog/*        /journal/:splat  301
+/portfolio     /work/      301
+/locations     /areas/     301
+/service-areas /areas/     301
+/quote         /contact/   301

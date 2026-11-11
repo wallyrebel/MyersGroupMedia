@@ -1,0 +1,50 @@
+---
+/** Contact section shown near the bottom of every page. */
+import Icon from "@/components/Icon.astro";
+import ContactButtons from "@/components/ContactButtons.astro";
+import { site } from "@/data/site";
+
+interface Props {
+  heading?: string;
+  text?: string;
+  subject?: string;
+}
+const {
+  heading = "Have a question? Just ask.",
+  text = "Call us, or click the email button and your email opens with our address already filled in. A real person answers — usually within one business day.",
+  subject,
+} = Astro.props;
+const [emailUser, emailDomain] = site.email.split("@");
+---
+
+<section class="bg-navy on-dark" aria-labelledby="contact-band-heading">
+  <div class="wrap py-16 lg:py-20">
+    <div class="grid lg:grid-cols-12 gap-10 items-center">
+      <div class="lg:col-span-7">
+        <p class="eyebrow mb-4">Get in touch</p>
+        <h2 id="contact-band-heading" class="h2 mb-4">{heading}</h2>
+        <p class="lead !text-[#c5cee3] max-w-2xl">{text}</p>
+      </div>
+      <div class="lg:col-span-5">
+        <ContactButtons tone="dark" subject={subject} class="lg:!flex-col xl:!flex-row" />
+        <ul class="mt-6 space-y-2.5 text-[0.98rem]">
+          <li class="flex items-center gap-2.5">
+            <Icon name="clock" size={18} class="text-brand-light shrink-0" />
+            <span>{site.hours}</span>
+          </li>
+          <li class="flex items-center gap-2.5">
+            <Icon name="pin" size={18} class="text-brand-light shrink-0" />
+            <span>Serving all of {site.region}</span>
+          </li>
+          <li class="flex items-start gap-2.5">
+            <Icon name="copy" size={18} class="text-brand-light shrink-0 mt-1" />
+            <span>
+              Email not opening?
+              <button type="button" class="link cursor-pointer" data-copy-email data-u={emailUser} data-d={emailDomain}>Copy our email address</button>
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

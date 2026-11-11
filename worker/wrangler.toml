@@ -10,8 +10,8 @@ compatibility_date = "2025-01-01"
 crons = ["0 14 * * 1"]
 
 [vars]
-GITHUB_OWNER = "REPLACE_WITH_GITHUB_OWNER"
-GITHUB_REPO  = "myers-group-media"
+GITHUB_OWNER = "wallyrebel"
+GITHUB_REPO  = "MyersGroupMedia"
 GITHUB_BRANCH = "main"
 BLOG_DIR = "src/content/journal"
 LEDGER_PATH = "src/content/journal/_topics-used.json"

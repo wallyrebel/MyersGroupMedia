@@ -1,0 +1,48 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/PageHero.astro";
+import { site, mailto } from "@/data/site";
+
+const crumbs = [
+  { name: "Home", href: "/" },
+  { name: "Privacy", href: "/privacy/" },
+];
+---
+
+<BaseLayout
+  title="Privacy Policy"
+  description={`How ${site.name} handles information when you visit this website or contact us.`}
+>
+  <PageHero crumbs={crumbs} title="Privacy policy" lead="The short version: we do not collect your information through this website, and we never sell it." buttons={false} />
+
+  <section class="section">
+    <div class="wrap">
+      <div class="prose max-w-3xl">
+        <h2>Contacting us</h2>
+        <p>
+          This website has no sign-up forms and does not store anything you type. The “Email us” buttons simply open your own email app with our address filled in. Nothing is sent until you press send in your email.
+        </p>
+        <p>
+          When you email or call us, we receive whatever you choose to share — typically your name, email address, phone number and your message. We use that only to reply to you and to provide the services you ask for.
+        </p>
+        <h2>What we do not do</h2>
+        <ul>
+          <li>We do not sell, rent or trade your information.</li>
+          <li>We do not add you to a mailing list without your permission.</li>
+        </ul>
+        <h2>Website hosting</h2>
+        <p>
+          Like nearly every website, our hosting provider keeps standard technical logs (such as IP address and browser type) to keep the site secure and running.
+        </p>
+        <h2>Links to other websites</h2>
+        <p>
+          Our portfolio links to client websites that we do not control. Those sites have their own privacy practices.
+        </p>
+        <h2>Questions</h2>
+        <p>
+          Call <a href={site.phoneHref}>{site.phone}</a> or <a href={mailto("Privacy question")}>email us</a> and we will be glad to help.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

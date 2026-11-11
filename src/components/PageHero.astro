@@ -1,0 +1,45 @@
+---
+/** Standard top-of-page block: breadcrumbs, H1, intro and the contact buttons. */
+import Icon from "@/components/Icon.astro";
+import ContactButtons from "@/components/ContactButtons.astro";
+
+interface Crumb {
+  name: string;
+  href: string;
+}
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lead?: string;
+  crumbs?: Crumb[];
+  subject?: string;
+  buttons?: boolean;
+}
+const { eyebrow, title, lead, crumbs = [], subject, buttons = true } = Astro.props;
+---
+
+<section class="bg-hero border-b border-line">
+  <div class="wrap pt-8 pb-12 lg:pt-10 lg:pb-16">
+    {crumbs.length > 0 && (
+      <nav aria-label="Breadcrumb" class="mb-7">
+        <ol class="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[0.9rem] text-muted">
+          {crumbs.map((c, i) => (
+            <li class="flex items-center gap-1.5">
+              {i > 0 && <span aria-hidden="true" class="text-[#a9b2c6]">/</span>}
+              {i === crumbs.length - 1
+                ? <span aria-current="page" class="font-semibold text-ink">{c.name}</span>
+                : <a href={c.href} class="hover:text-brand underline-offset-4 hover:underline py-1">{c.name}</a>}
+            </li>
+          ))}
+        </ol>
+      </nav>
+    )}
+    <div class="max-w-4xl">
+      {eyebrow && <p class="eyebrow mb-4"><Icon name="pin" size={16} />{eyebrow}</p>}
+      <h1 class="h1">{title}</h1>
+      {lead && <p class="lead mt-5 max-w-3xl">{lead}</p>}
+      <slot />
+      {buttons && <ContactButtons subject={subject} class="mt-8" />}
+    </div>
+  </div>
+</section>

@@ -7,9 +7,21 @@
       "category": "App Design",
       "topic": "when native apps are the wrong answer for most businesses",
       "angle": "contrarian — most 'we need an app' requests should be websites or PWAs; three-question filter",
-      "hooks": ["four out of five I talk out of it", "doing this since 2008"],
-      "examples": ["PWAs with push notifications", "App Store 30% tax", "cost of maintenance cycles", "TestFlight founder vs profitable founder"],
-      "tags": ["app-design", "strategy", "product"]
+      "hooks": [
+        "four out of five I talk out of it",
+        "doing this since 2008"
+      ],
+      "examples": [
+        "PWAs with push notifications",
+        "App Store 30% tax",
+        "cost of maintenance cycles",
+        "TestFlight founder vs profitable founder"
+      ],
+      "tags": [
+        "app-design",
+        "strategy",
+        "product"
+      ]
     },
     {
       "slug": "why-your-website-is-the-only-marketing-asset-you-actually-own",
@@ -17,9 +29,20 @@
       "category": "Web Design",
       "topic": "websites as owned assets vs rented platforms",
       "angle": "ownership/equity framing — comparing platforms to renting and websites to owning real estate",
-      "hooks": ["doing this since 2008", "platforms come and go but websites last"],
-      "examples": ["Facebook reach throttling", "Twitter to X", "TikTok rise"],
-      "tags": ["web-design", "strategy", "branding"]
+      "hooks": [
+        "doing this since 2008",
+        "platforms come and go but websites last"
+      ],
+      "examples": [
+        "Facebook reach throttling",
+        "Twitter to X",
+        "TikTok rise"
+      ],
+      "tags": [
+        "web-design",
+        "strategy",
+        "branding"
+      ]
     },
     {
       "slug": "the-million-follower-playbook-what-actually-builds-an-audience",
@@ -27,9 +50,19 @@
       "category": "Social Media",
       "topic": "what actually grows social audiences past a million",
       "angle": "system over tactics — boring consistency beats viral luck",
-      "hooks": ["million followers and 100M views", "people ask me how"],
-      "examples": ["clients with viral posts that didn't convert", "compounding vs viral"],
-      "tags": ["social-media", "content", "growth"]
+      "hooks": [
+        "million followers and 100M views",
+        "people ask me how"
+      ],
+      "examples": [
+        "clients with viral posts that didn't convert",
+        "compounding vs viral"
+      ],
+      "tags": [
+        "social-media",
+        "content",
+        "growth"
+      ]
     },
     {
       "slug": "seo-in-2026-what-changed-what-didnt-and-what-actually-works",
@@ -37,9 +70,21 @@
       "category": "Digital Marketing",
       "topic": "SEO landscape in 2026 with AI overviews and zero-click search",
       "angle": "what changed vs what stayed the same — basics still rule",
-      "hooks": ["started SEO in 2008", "meta keywords tag era"],
-      "examples": ["AI overviews", "E-E-A-T", "local pack", "Core Web Vitals"],
-      "tags": ["seo", "search", "content"]
+      "hooks": [
+        "started SEO in 2008",
+        "meta keywords tag era"
+      ],
+      "examples": [
+        "AI overviews",
+        "E-E-A-T",
+        "local pack",
+        "Core Web Vitals"
+      ],
+      "tags": [
+        "seo",
+        "search",
+        "content"
+      ]
     },
     {
       "slug": "why-most-paid-ads-fail-and-the-three-things-the-winners-do-differently",
@@ -47,9 +92,20 @@
       "category": "Digital Advertising",
       "topic": "what separates winning vs losing paid ad campaigns",
       "angle": "offer + funnel + signal — three pillar diagnostic framework",
-      "hooks": ["tens of millions in spend", "since Facebook sidebar widget era"],
-      "examples": ["roofing inspection offer", "conversions API", "optimization event depth"],
-      "tags": ["advertising", "paid-media", "conversion"]
+      "hooks": [
+        "tens of millions in spend",
+        "since Facebook sidebar widget era"
+      ],
+      "examples": [
+        "roofing inspection offer",
+        "conversions API",
+        "optimization event depth"
+      ],
+      "tags": [
+        "advertising",
+        "paid-media",
+        "conversion"
+      ]
     },
     {
       "slug": "your-brand-isnt-your-logo",
@@ -57,9 +113,20 @@
       "category": "Branding",
       "topic": "brand is the gap between promise and delivery, not visual identity",
       "angle": "anti-rebrand — brand is operational, not aesthetic; logos don't fix business problems",
-      "hooks": ["client called about a rebrand", "operations project with a design output"],
-      "examples": ["pizza place 22-minute delivery", "dentist no-pain promise", "the five-customer gap interview"],
-      "tags": ["branding", "strategy", "design"]
+      "hooks": [
+        "client called about a rebrand",
+        "operations project with a design output"
+      ],
+      "examples": [
+        "pizza place 22-minute delivery",
+        "dentist no-pain promise",
+        "the five-customer gap interview"
+      ],
+      "tags": [
+        "branding",
+        "strategy",
+        "design"
+      ]
     },
     {
       "slug": "the-software-trap",
@@ -67,9 +134,21 @@
       "category": "Software Development",
       "topic": "when custom software costs more than it saves; off-the-shelf vs custom",
       "angle": "honeymoon vs marriage — three-step filter; starting with a scalpel not a platform",
-      "hooks": ["ugliest projects I walk into", "custom software as permanent employee who never leaves"],
-      "examples": ["Airtable/Monday/HubSpot SaaS ecosystem", "CVE patches", "annual maintenance 15-25%", "bus factor of one"],
-      "tags": ["software", "operations", "strategy"]
+      "hooks": [
+        "ugliest projects I walk into",
+        "custom software as permanent employee who never leaves"
+      ],
+      "examples": [
+        "Airtable/Monday/HubSpot SaaS ecosystem",
+        "CVE patches",
+        "annual maintenance 15-25%",
+        "bus factor of one"
+      ],
+      "tags": [
+        "software",
+        "operations",
+        "strategy"
+      ]
     },
     {
       "slug": "the-attribution-lie",
@@ -77,9 +156,120 @@
       "category": "Digital Marketing",
       "topic": "why ad platform dashboards over-report and how to actually measure marketing",
       "angle": "three trustworthy numbers + incrementality testing + three-layer measurement stack",
-      "hooks": ["300% of actual revenue", "18 years of running this exercise"],
-      "examples": ["view-through conversions", "iOS 14.5 modeled conversions", "pausing Meta ads for incrementality", "retargeting 12x dashboard vs 2x incremental", "post-purchase survey"],
-      "tags": ["analytics", "advertising", "strategy"]
+      "hooks": [
+        "300% of actual revenue",
+        "18 years of running this exercise"
+      ],
+      "examples": [
+        "view-through conversions",
+        "iOS 14.5 modeled conversions",
+        "pausing Meta ads for incrementality",
+        "retargeting 12x dashboard vs 2x incremental",
+        "post-purchase survey"
+      ],
+      "tags": [
+        "analytics",
+        "advertising",
+        "strategy"
+      ]
+    },
+    {
+      "slug": "small-business-it-support-guide",
+      "date": "2026-11-11",
+      "category": "IT Services",
+      "topic": "what IT support a small business actually needs",
+      "angle": "checklist — backups, security, passwords, wifi, email, someone to call",
+      "hooks": [],
+      "examples": [],
+      "tags": [
+        "it-services",
+        "security",
+        "small-business"
+      ]
+    },
+    {
+      "slug": "how-much-does-a-small-business-website-cost",
+      "date": "2026-11-11",
+      "category": "Web Design",
+      "topic": "what drives the cost of a small business website",
+      "angle": "buyer's guide — three ways to get a site, cost drivers, questions to ask",
+      "hooks": [],
+      "examples": [],
+      "tags": [
+        "web-design",
+        "pricing",
+        "small-business"
+      ]
+    },
+    {
+      "slug": "signs-your-website-is-costing-you-customers",
+      "date": "2026-11-11",
+      "category": "Web Design",
+      "topic": "warning signs a website is losing customers",
+      "angle": "seven-point self-check with a fix for each",
+      "hooks": [],
+      "examples": [],
+      "tags": [
+        "web-design",
+        "small-business",
+        "conversion"
+      ]
+    },
+    {
+      "slug": "facebook-page-vs-website",
+      "date": "2026-11-11",
+      "category": "Web Design",
+      "topic": "Facebook page versus website for local businesses",
+      "angle": "they do different jobs — Facebook is where you talk, the website is where you close",
+      "hooks": [],
+      "examples": [],
+      "tags": [
+        "web-design",
+        "social-media",
+        "small-business"
+      ]
+    },
+    {
+      "slug": "google-business-profile-guide",
+      "date": "2026-11-11",
+      "category": "SEO",
+      "topic": "setting up and using a Google Business Profile",
+      "angle": "step-by-step — claim, complete every field, photos, reviews, posts",
+      "hooks": [],
+      "examples": [],
+      "tags": [
+        "seo",
+        "local-seo",
+        "google"
+      ]
+    },
+    {
+      "slug": "local-seo-guide-north-mississippi",
+      "date": "2026-11-11",
+      "category": "SEO",
+      "topic": "local SEO basics for North Mississippi businesses",
+      "angle": "plain-English six-step guide — relevance, distance, prominence",
+      "hooks": [],
+      "examples": [],
+      "tags": [
+        "seo",
+        "local-seo",
+        "small-business"
+      ]
+    },
+    {
+      "slug": "does-my-small-business-need-a-website",
+      "date": "2026-11-11",
+      "category": "Web Design",
+      "topic": "why a small business needs a website",
+      "angle": "answers the 'I already have Facebook and word of mouth' objection",
+      "hooks": [],
+      "examples": [],
+      "tags": [
+        "web-design",
+        "small-business",
+        "local-seo"
+      ]
     }
   ]
 }

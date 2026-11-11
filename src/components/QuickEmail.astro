@@ -1,0 +1,90 @@
+---
+/**
+ * "Write your question, click, and your email opens ready to send."
+ * Nothing is submitted to a server — the button simply opens the visitor's
+ * own email app with our address, a subject and their message filled in.
+ */
+import Icon from "@/components/Icon.astro";
+import { site, mailto } from "@/data/site";
+import { services } from "@/data/services";
+
+interface Props {
+  heading?: string;
+  /** Pre-select a service in the dropdown */
+  service?: string;
+}
+const { heading = "Send us a quick email", service = "" } = Astro.props;
+const [emailUser, emailDomain] = site.email.split("@");
+---
+
+<div class="card p-6 sm:p-8">
+  <h2 class="h3 !text-[1.4rem]">{heading}</h2>
+  <p class="mt-2 text-[0.98rem]">
+    Type your question and click the button. Your email opens with everything filled in — just press send.
+  </p>
+
+  <form class="mt-6 space-y-4" data-quick-email data-u={emailUser} data-d={emailDomain} action={mailto()} method="get">
+    <div class="grid sm:grid-cols-2 gap-4">
+      <div>
+        <label class="field-label" for="qe-name">Your name</label>
+        <input class="field" id="qe-name" name="name" type="text" autocomplete="name" placeholder="Jane Smith" />
+      </div>
+      <div>
+        <label class="field-label" for="qe-phone">Phone <span class="font-normal text-muted">(optional)</span></label>
+        <input class="field" id="qe-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(662) 555-0123" />
+      </div>
+    </div>
+    <div>
+      <label class="field-label" for="qe-service">What can we help with?</label>
+      <select class="field" id="qe-service" name="service">
+        <option value="">Not sure yet / general question</option>
+        {services.map((s) => <option value={s.name} selected={s.name === service}>{s.name}</option>)}
+      </select>
+    </div>
+    <div>
+      <label class="field-label" for="qe-message">Your question</label>
+      <textarea class="field" id="qe-message" name="message" rows="4" placeholder="Tell us a little about what you need…"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary w-full sm:w-auto">
+      <Icon name="mail" size={20} />
+      <span>Open my email to send</span>
+    </button>
+  </form>
+
+  <p class="mt-5 text-[0.92rem] text-muted">
+    Email didn't open?
+    <a class="link" data-gmail-link href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(site.email)}`} target="_blank" rel="noopener">Open in Gmail</a>,
+    <button type="button" class="link cursor-pointer" data-copy-email data-u={emailUser} data-d={emailDomain}>copy our address</button>
+    or call <a class="link" href={site.phoneHref}>{site.phone}</a>.
+  </p>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>("[data-quick-email]").forEach((form) => {
+    const address = `${form.dataset.u}@${form.dataset.d}`;
+    const compose = () => {
+      const get = (n: string) => (form.elements.namedItem(n) as HTMLInputElement | null)?.value.trim() ?? "";
+      const name = get("name");
+      const phone = get("phone");
+      const service = get("service");
+      const message = get("message");
+      const subject = service ? `${service} question for Myers Group Media` : "Question for Myers Group Media";
+      const lines = [message || "Hi, I have a question about…", ""];
+      if (name) lines.push(`Name: ${name}`);
+      if (phone) lines.push(`Phone: ${phone}`);
+      if (service) lines.push(`Interested in: ${service}`);
+      return { subject, body: lines.join("\n") };
+    };
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const { subject, body } = compose();
+      window.location.href = `mailto:${address}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    });
+    // Keep the "Open in Gmail" fallback in sync with what was typed
+    const gmail = form.parentElement?.querySelector<HTMLAnchorElement>("[data-gmail-link]");
+    gmail?.addEventListener("click", () => {
+      const { subject, body } = compose();
+      gmail.href = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(address)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    });
+  });
+</script>

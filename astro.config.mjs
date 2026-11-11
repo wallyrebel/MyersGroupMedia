@@ -1,13 +1,13 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
-import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   site: 'https://myersgroupmedia.com',
-  integrations: [mdx(), react(), sitemap()],
+  trailingSlash: 'always',
+  integrations: [mdx(), sitemap()],
   vite: {
     plugins: [tailwindcss()],
   },
@@ -15,7 +15,7 @@ export default defineConfig({
     inlineStylesheets: 'auto',
   },
   prefetch: {
-    prefetchAll: true,
-    defaultStrategy: 'viewport',
+    prefetchAll: false,
+    defaultStrategy: 'hover',
   },
 });

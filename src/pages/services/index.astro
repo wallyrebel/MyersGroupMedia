@@ -1,53 +1,61 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { services } from "@/data/site";
+import PageHero from "@/components/PageHero.astro";
+import Icon from "@/components/Icon.astro";
+import { services } from "@/data/services";
+import { locations } from "@/data/locations";
+import { breadcrumbSchema } from "@/lib/schema";
+
+const crumbs = [
+  { name: "Home", href: "/" },
+  { name: "Services", href: "/services/" },
+];
 ---
 
-<BaseLayout title="Services" description="Six services. One system. Web design, app design, social media, software, advertising, and SEO.">
-  <section class="container-xl pt-40 pb-20">
-    <div class="eyebrow mb-8">Services</div>
-    <h1 class="display-1 max-w-[16ch]">
-      <span class="split-line"><span>Six services.</span></span>
-      <span class="split-line"><span><em class="text-[color:var(--color-accent)]">One</em> integrated</span></span>
-      <span class="split-line"><span>growth system.</span></span>
-    </h1>
-  </section>
+<BaseLayout
+  title="Services — Web Design, Hosting, IT & Marketing"
+  description="Web design, web hosting, app development, IT services, marketing and SEO, social media marketing, graphic design and custom software for North Mississippi businesses."
+  schema={[breadcrumbSchema(crumbs)]}
+>
+  <PageHero
+    crumbs={crumbs}
+    title="Services for North Mississippi businesses"
+    lead="Eight services, one local team. Use us for a single project or let us handle all of it — your website, your technology and your marketing working together."
+  />
 
-  <section class="border-t border-[color:var(--color-line)]">
-    {services.map((s) => (
-      <a href={`/services/${s.slug}`} class="group relative block border-b border-[color:var(--color-line)] py-16 lg:py-24 transition-colors duration-500 hover:bg-[color:var(--color-ink-2)]">
-        <span class="absolute left-0 top-0 bottom-0 w-px bg-[color:var(--color-accent)] origin-top scale-y-0 group-hover:scale-y-100 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"></span>
-        <div class="container-xl">
-          <div class="grid grid-cols-12 gap-6 items-start">
-            <div class="col-span-12 md:col-span-1 font-mono text-sm text-[color:var(--color-mist)] group-hover:text-[color:var(--color-accent)] transition-colors duration-500">{s.number}</div>
-            <div class="col-span-12 md:col-span-6">
-              <h2 class="display-2 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-3 group-hover:text-[color:var(--color-accent)]">{s.title}</h2>
-            </div>
-            <div class="col-span-12 md:col-span-5">
-              <p class="text-lg text-[color:var(--color-bone-dim)] mb-6 leading-relaxed">{s.description}</p>
-              <div class="link-arrow">
-                Explore
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" stroke-width="1.4"/></svg>
-              </div>
+  <section class="section">
+    <div class="wrap grid md:grid-cols-2 gap-6">
+      {services.map((s) => (
+        <article class="card p-7 flex flex-col">
+          <div class="flex items-start gap-4">
+            <span class="icon-tile"><Icon name={s.icon} size={24} /></span>
+            <div>
+              <h2 class="h3 !text-[1.4rem]"><a href={`/services/${s.slug}/`} class="hover:text-brand transition-colors">{s.name}</a></h2>
+              <p class="mt-1.5">{s.short}</p>
             </div>
           </div>
-        </div>
-      </a>
-    ))}
+          <ul class="mt-5 grid sm:grid-cols-2 gap-x-4 gap-y-2 text-[0.96rem]">
+            {s.includes.map((inc) => (
+              <li class="flex items-start gap-2"><Icon name="check" size={18} class="text-brand mt-1 shrink-0" />{inc.title}</li>
+            ))}
+          </ul>
+          <a href={`/services/${s.slug}/`} class="btn btn-outline btn-sm mt-6 self-start">
+            {s.name} details <Icon name="arrow" size={17} />
+          </a>
+        </article>
+      ))}
+    </div>
   </section>
 
-  <section class="container-xl py-32">
-    <div class="grid lg:grid-cols-12 gap-12">
-      <div class="lg:col-span-4">
-        <div class="eyebrow">One team. One bill.</div>
-      </div>
-      <div class="lg:col-span-8">
-        <h2 class="display-2 mb-8 reveal max-w-[22ch]">Hire us for <em class="text-[color:var(--color-accent)]">one thing</em>. Or hire us to run everything.</h2>
-        <a href="/contact" class="btn-primary">
-          Start a project
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" stroke-width="1.4"/></svg>
-        </a>
-      </div>
+  <section class="section bg-surface" aria-labelledby="areas-heading">
+    <div class="wrap">
+      <h2 id="areas-heading" class="h2 max-w-2xl">Available across North Mississippi</h2>
+      <p class="mt-4 max-w-2xl">Every service is available in each of the areas we serve. Choose yours for local details.</p>
+      <ul class="mt-7 flex flex-wrap gap-2.5">
+        {locations.map((l) => (
+          <li><a href={`/areas/${l.slug}/`} class="chip"><Icon name="pin" size={16} class="text-brand" />{l.full}</a></li>
+        ))}
+      </ul>
     </div>
   </section>
 </BaseLayout>

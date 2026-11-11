@@ -1,0 +1,181 @@
+---
+/**
+ * Local service pages — e.g. /services/web-design/corinth-ms/
+ * One page for every service in every city/county we serve (8 × 11 = 88).
+ *
+ * Each page leads with copy written for that exact service-and-town pair
+ * (locations.ts → angles), and the supporting sections are rotated by town so
+ * the pages are genuinely different from one another, not one template with
+ * the town name swapped.
+ */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/PageHero.astro";
+import Icon from "@/components/Icon.astro";
+import WorkCard from "@/components/WorkCard.astro";
+import Faq from "@/components/Faq.astro";
+import { site } from "@/data/site";
+import { services, type Service } from "@/data/services";
+import { localAreas, localIndustries, type Location } from "@/data/locations";
+import { localTitle, localHref, localMeta, localFaqs, relatedWork, rotate } from "@/lib/local";
+import { breadcrumbSchema, faqSchema, serviceSchema } from "@/lib/schema";
+
+export function getStaticPaths() {
+  return services.flatMap((service) =>
+    localAreas.map((loc, index) => ({
+      params: { service: service.slug, location: loc.slug },
+      props: { service, loc, index },
+    })),
+  );
+}
+
+interface Props {
+  service: Service;
+  loc: Location;
+  index: number;
+}
+const { service, loc, index } = Astro.props;
+const name = localTitle[service.slug];
+const path = localHref(service, loc);
+const description = localMeta(service, loc);
+const crumbs = [
+  { name: "Home", href: "/" },
+  { name: "Services", href: "/services/" },
+  { name: service.name, href: `/services/${service.slug}/` },
+  { name: loc.full, href: path },
+];
+const faqs = [...localFaqs(service, loc), ...rotate(service.faqs, index).slice(0, 2)];
+const work = rotate(relatedWork(service.slug, 7), index).slice(0, 3);
+const fit = rotate(service.goodFit, index).slice(0, 3);
+const industries = localIndustries[loc.slug] ?? [];
+const otherServices = services.filter((s) => s.slug !== service.slug);
+const otherAreas = localAreas.filter((l) => l.slug !== loc.slug);
+const subject = `${service.name} in ${loc.name}`;
+const countyNote = loc.kind === "city" ? `${loc.name} and ${loc.county}` : loc.name;
+---
+
+<BaseLayout
+  title={`${name} in ${loc.full}`}
+  description={description}
+  schema={[serviceSchema(service, loc, path, description), breadcrumbSchema(crumbs), faqSchema(faqs)]}
+  contact={{
+    heading: `Need ${service.keyword} in ${loc.name}?`,
+    text: `Call us, or click the email button and your email opens with our address already filled in. We usually reply within one business day.`,
+    subject,
+  }}
+>
+  <PageHero crumbs={crumbs} eyebrow={loc.full} title={`${name} in ${loc.full}`} lead={loc.angles[service.slug]} subject={subject} />
+
+  <!-- Local context first: who we help here -->
+  <section class="section" aria-labelledby="local-heading">
+    <div class="wrap grid lg:grid-cols-2 gap-10 lg:gap-14 items-start">
+      <div>
+        <p class="eyebrow mb-3">Local to you</p>
+        <h2 id="local-heading" class="h2">{name} for {loc.name} businesses</h2>
+        <p class="mt-4 text-[1.08rem]">{loc.about[1]}</p>
+        <p class="mt-4">{service.intro[index % service.intro.length]}</p>
+        {industries.length > 0 && (
+          <>
+            <h3 class="font-display font-bold text-ink mt-7 mb-3">Who we work with in {countyNote}</h3>
+            <ul class="grid sm:grid-cols-2 gap-x-4 gap-y-2.5">
+              {industries.map((ind) => (
+                <li class="flex items-start gap-2.5"><Icon name="check" size={19} class="text-brand mt-1 shrink-0" />{ind}</li>
+              ))}
+            </ul>
+          </>
+        )}
+      </div>
+      <aside class="card p-7" aria-labelledby="about-area-heading">
+        <h2 id="about-area-heading" class="h3 !text-[1.35rem] flex items-center gap-2.5"><Icon name="pin" size={22} class="text-brand" />Serving {loc.long}</h2>
+        <p class="mt-3 text-[0.98rem]">{loc.about[0]}</p>
+        <h3 class="font-display font-bold text-ink mt-5 mb-2.5 text-[0.95rem]">Also serving nearby</h3>
+        <ul class="flex flex-wrap gap-2">
+          {loc.communities.map((c) => <li class="tag">{c}</li>)}
+        </ul>
+        <a href={`/areas/${loc.slug}/`} class="link inline-block mt-5">Everything we do in {loc.name}</a>
+      </aside>
+    </div>
+  </section>
+
+  <!-- What's included -->
+  <section class="section bg-surface" aria-labelledby="included-heading">
+    <div class="wrap">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-9">
+        <div class="max-w-2xl">
+          <p class="eyebrow mb-3">What you get</p>
+          <h2 id="included-heading" class="h2">What our {service.keyword} includes</h2>
+        </div>
+        <a href={`/services/${service.slug}/`} class="btn btn-outline btn-sm self-start md:self-auto">Full {service.name} details <Icon name="arrow" size={17} /></a>
+      </div>
+      <ul class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {rotate(service.includes, index).map((inc) => (
+          <li class="card p-5">
+            <h3 class="h3 flex items-start gap-2.5"><Icon name="check" size={20} class="text-brand mt-0.5 shrink-0" />{inc.title}</h3>
+            <p class="mt-2 text-[0.96rem]">{inc.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Good fit -->
+  <section class="section" aria-labelledby="fit-heading">
+    <div class="wrap grid lg:grid-cols-12 gap-10">
+      <div class="lg:col-span-5">
+        <p class="eyebrow mb-3">Is this for you?</p>
+        <h2 id="fit-heading" class="h2">Signs your {loc.name} business could use our help</h2>
+        <p class="mt-4">
+          {site.name} has worked with Mississippi businesses since {site.founded}. If any of these sound familiar, call {site.phone} and we will talk it through.
+        </p>
+      </div>
+      <ul class="lg:col-span-7 space-y-3.5">
+        {fit.map((g) => (
+          <li class="card px-5 py-4 flex items-start gap-3 text-[1.03rem] text-ink">
+            <Icon name="check" size={21} class="text-brand mt-0.5 shrink-0" />
+            {g}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Work -->
+  <section class="section bg-surface" aria-labelledby="work-heading">
+    <div class="wrap">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-10">
+        <div class="max-w-2xl">
+          <p class="eyebrow mb-3">Our work</p>
+          <h2 id="work-heading" class="h2">Recent Mississippi projects</h2>
+        </div>
+        <a href="/work/" class="btn btn-outline btn-sm self-start md:self-auto">See all our work <Icon name="arrow" size={17} /></a>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {work.map((item) => <WorkCard item={item} />)}
+      </div>
+    </div>
+  </section>
+
+  <Faq faqs={faqs} heading={`${service.name} in ${loc.name}: common questions`} />
+
+  <!-- Cross links -->
+  <section class="section bg-surface" aria-label="More services and areas">
+    <div class="wrap grid lg:grid-cols-2 gap-12">
+      <div>
+        <h2 class="h3 !text-[1.4rem] mb-5">More services in {loc.name}</h2>
+        <ul class="flex flex-wrap gap-2.5">
+          {otherServices.map((s) => (
+            <li><a href={localHref(s, loc)} class="chip"><Icon name={s.icon} size={16} class="text-brand" />{s.name}</a></li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h2 class="h3 !text-[1.4rem] mb-5">{service.name} in nearby areas</h2>
+        <ul class="flex flex-wrap gap-2.5">
+          {otherAreas.map((l) => (
+            <li><a href={localHref(service, l)} class="chip"><Icon name="pin" size={16} class="text-brand" />{l.name}</a></li>
+          ))}
+          <li><a href={`/services/${service.slug}/`} class="chip"><Icon name="pin" size={16} class="text-brand" />All of North Mississippi</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

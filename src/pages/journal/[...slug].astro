@@ -1,124 +1,142 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getCollection, render } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Icon from "@/components/Icon.astro";
+import ContactButtons from "@/components/ContactButtons.astro";
+import { site } from "@/data/site";
+import { services } from "@/data/services";
+import { BUSINESS_ID, breadcrumbSchema } from "@/lib/schema";
+import { postImage } from "@/lib/blog";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("journal", ({ data }) => !data.draft);
-  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+  const posts = (await getCollection("journal", ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+  );
+  return posts.map((post, i) => ({
+    params: { slug: post.id },
+    props: { post, more: posts.filter((_, j) => j !== i).slice(0, 3) },
+  }));
 }
 
-const { post } = Astro.props;
+const { post, more } = Astro.props;
 const { Content } = await render(post);
-const fmtDate = (d: Date) => d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+const fmtDate = (d: Date) => d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" });
+const path = `/journal/${post.id}/`;
+const image = postImage(post.data.image);
+const crumbs = [
+  { name: "Home", href: "/" },
+  { name: "Blog", href: "/journal/" },
+  { name: post.data.title, href: path },
+];
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: post.data.title,
+  description: post.data.excerpt,
+  datePublished: post.data.date.toISOString(),
+  dateModified: post.data.date.toISOString(),
+  author: post.data.author === site.name ? { "@id": BUSINESS_ID } : { "@type": "Person", name: post.data.author },
+  publisher: { "@id": BUSINESS_ID },
+  mainEntityOfPage: new URL(path, site.url).toString(),
+  image: new URL(image ?? "/og.jpg", site.url).toString(),
+  keywords: post.data.tags.join(", "),
+};
 ---
 
-<BaseLayout title={post.data.title} description={post.data.excerpt} image={post.data.image}>
+<BaseLayout
+  title={post.data.title}
+  description={post.data.excerpt}
+  image={image}
+  ogType="article"
+  schema={[articleSchema, breadcrumbSchema(crumbs)]}
+  contact={{ heading: "Have a question about this? Ask us." }}
+>
   <article>
-    <header class="container-xl pt-40 pb-16">
-      <div class="max-w-4xl">
-        <div class="flex items-center gap-4 mb-8 font-mono text-xs uppercase tracking-[0.15em] text-[color:var(--color-mist)]">
-          <span>{fmtDate(post.data.date)}</span>
-          <span class="text-[color:var(--color-line)]">/</span>
-          <span>{post.data.author}</span>
-          {post.data.category && <><span class="text-[color:var(--color-line)]">/</span><span>{post.data.category}</span></>}
+    <header class="bg-hero border-b border-line">
+      <div class="wrap pt-8 pb-12 lg:pt-10 lg:pb-14">
+        <nav aria-label="Breadcrumb" class="mb-7">
+          <ol class="flex flex-wrap items-center gap-x-1.5 text-[0.9rem] text-muted">
+            <li><a href="/" class="hover:text-brand hover:underline underline-offset-4 py-1">Home</a></li>
+            <li aria-hidden="true" class="text-[#a9b2c6]">/</li>
+            <li><a href="/journal/" class="hover:text-brand hover:underline underline-offset-4 py-1">Blog</a></li>
+          </ol>
+        </nav>
+        <div class="max-w-3xl">
+          {post.data.category && <p class="eyebrow mb-4">{post.data.category}</p>}
+          <h1 class="h1 !text-[clamp(1.9rem,4vw,3rem)]">{post.data.title}</h1>
+          <p class="lead mt-5">{post.data.excerpt}</p>
+          <p class="mt-6 text-[0.95rem] text-muted">
+            By <span class="font-semibold text-ink">{post.data.author}</span> ·
+            <time datetime={post.data.date.toISOString()}>{fmtDate(post.data.date)}</time>
+          </p>
         </div>
-        <h1 class="display-2 mb-8">{post.data.title}</h1>
-        <p class="text-xl lg:text-2xl text-[color:var(--color-bone-dim)] max-w-3xl">{post.data.excerpt}</p>
       </div>
     </header>
 
-    {post.data.image && (
-      <div class="container-xl mb-16">
-        <div class="relative aspect-[21/9] overflow-hidden bg-[color:var(--color-ink-2)]">
-          <img src={post.data.image} alt={post.data.title} class="w-full h-full object-cover" />
-        </div>
-        {post.data.imageCredit && (
-          <div class="mt-3 font-mono text-xs uppercase tracking-[0.14em] text-[color:var(--color-mist)]">
-            {post.data.imageCreditUrl ? <a href={post.data.imageCreditUrl} target="_blank" rel="noopener" class="hover:text-[color:var(--color-accent)]">{post.data.imageCredit}</a> : post.data.imageCredit}
-          </div>
+    <div class="wrap py-12 lg:py-16 grid lg:grid-cols-12 gap-12">
+      <div class="lg:col-span-8 max-w-3xl">
+        {image && (
+          <figure class="mb-10">
+            <img src={image} alt="" width="1200" height="630" class="w-full rounded-2xl aspect-[16/9] object-cover" />
+            {post.data.imageCredit && (
+              <figcaption class="mt-2 text-[0.85rem] text-muted">
+                {post.data.imageCreditUrl
+                  ? <a href={post.data.imageCreditUrl} target="_blank" rel="noopener" class="underline underline-offset-4">{post.data.imageCredit}</a>
+                  : post.data.imageCredit}
+              </figcaption>
+            )}
+          </figure>
         )}
-      </div>
-    )}
-
-    <div class="container-xl pb-32">
-      <div class="grid lg:grid-cols-12 gap-12">
-        <aside class="lg:col-span-3">
-          <div class="sticky top-32">
-            <div class="eyebrow mb-4">Tags</div>
-            <div class="flex flex-wrap gap-2">
-              {post.data.tags.map((t) => (
-                <span class="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-[color:var(--color-mist)] border border-[color:var(--color-line)] px-2 py-1 rounded-full">{t}</span>
-              ))}
-            </div>
-          </div>
-        </aside>
-        <div class="lg:col-span-9 prose-mgm max-w-3xl">
+        <div class="prose">
           <Content />
         </div>
-      </div>
-    </div>
 
-    <section class="container-xl py-24 border-t border-[color:var(--color-line)]">
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
-        <div>
-          <div class="eyebrow mb-4">Keep reading</div>
-          <a href="/journal" class="display-3 hover:text-[color:var(--color-accent)] transition-colors">All journal entries →</a>
+        {post.data.tags.length > 0 && (
+          <ul class="mt-10 flex flex-wrap gap-2" aria-label="Tags">
+            {post.data.tags.map((t) => <li class="tag">{t}</li>)}
+          </ul>
+        )}
+
+        <aside class="card p-6 sm:p-8 mt-12 bg-surface">
+          <h2 class="h3 !text-[1.35rem]">Want help with this for your business?</h2>
+          <p class="mt-2">Call or email and tell us what you are working on. No pressure, just straight answers.</p>
+          <ContactButtons class="mt-5" subject={`Question about: ${post.data.title}`} />
+        </aside>
+      </div>
+
+      <!-- Sidebar: stays in view on desktop while reading -->
+      <aside class="hidden lg:block lg:col-span-4" aria-label="Our services">
+        <div class="card p-6 sticky top-24">
+          <h2 class="h3">How we can help</h2>
+          <ul class="mt-3">
+            {services.map((s) => (
+              <li>
+                <a href={`/services/${s.slug}/`} class="flex items-center gap-2.5 py-2 font-semibold text-ink hover:text-brand transition-colors text-[0.97rem]">
+                  <Icon name={s.icon} size={18} class="text-brand shrink-0" />{s.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <ContactButtons class="mt-4 !flex-col" subject={`Question about: ${post.data.title}`} />
         </div>
-        <a href="/contact" class="btn-primary">Start a project</a>
+      </aside>
+    </div>
+  </article>
+
+  {more.length > 0 && (
+    <section class="section bg-surface" aria-labelledby="more-heading">
+      <div class="wrap">
+        <h2 id="more-heading" class="h2 mb-8">Keep reading</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+          {more.map((p) => (
+            <a href={`/journal/${p.id}/`} class="card p-6 flex flex-col gap-3 group">
+              <p class="text-[0.85rem] text-muted">{fmtDate(p.data.date)}</p>
+              <h3 class="h3 group-hover:text-brand transition-colors">{p.data.title}</h3>
+              <span class="mt-auto pt-2 inline-flex items-center gap-1.5 font-semibold text-brand text-[0.95rem]">Read article <Icon name="arrow" size={17} /></span>
+            </a>
+          ))}
+        </div>
       </div>
     </section>
-  </article>
+  )}
 </BaseLayout>
-
-<style is:global>
-  .prose-mgm h2 {
-    font-family: var(--font-display);
-    font-size: clamp(1.6rem, 3vw, 2.4rem);
-    letter-spacing: -0.02em;
-    line-height: 1.05;
-    margin: 3rem 0 1rem;
-    color: var(--color-bone);
-  }
-  .prose-mgm h3 {
-    font-family: var(--font-display);
-    font-size: clamp(1.25rem, 2vw, 1.6rem);
-    margin: 2rem 0 0.75rem;
-    color: var(--color-bone);
-  }
-  .prose-mgm p {
-    font-size: 1.125rem;
-    line-height: 1.75;
-    color: var(--color-bone-dim);
-    margin-bottom: 1.5rem;
-  }
-  .prose-mgm a {
-    color: var(--color-accent);
-    text-decoration: underline;
-    text-underline-offset: 4px;
-    text-decoration-color: rgba(232, 177, 74, 0.4);
-  }
-  .prose-mgm a:hover { text-decoration-color: var(--color-accent); }
-  .prose-mgm ul, .prose-mgm ol { margin: 1.5rem 0; padding-left: 1.5rem; }
-  .prose-mgm ul li { list-style: none; position: relative; padding-left: 1.25rem; margin-bottom: 0.75rem; color: var(--color-bone-dim); font-size: 1.125rem; line-height: 1.7; }
-  .prose-mgm ul li::before { content: ""; position: absolute; left: 0; top: 0.7em; width: 8px; height: 1px; background: var(--color-accent); }
-  .prose-mgm ol li { margin-bottom: 0.75rem; color: var(--color-bone-dim); font-size: 1.125rem; line-height: 1.7; }
-  .prose-mgm blockquote {
-    border-left: 2px solid var(--color-accent);
-    padding-left: 1.5rem;
-    margin: 2rem 0;
-    font-family: var(--font-serif), serif;
-    font-style: italic;
-    font-size: 1.4rem;
-    color: var(--color-bone);
-  }
-  .prose-mgm strong { color: var(--color-bone); font-weight: 600; }
-  .prose-mgm code {
-    font-family: var(--font-mono);
-    font-size: 0.9em;
-    background: var(--color-ink-2);
-    padding: 0.15em 0.4em;
-    border-radius: 4px;
-    color: var(--color-accent);
-  }
-  .prose-mgm hr { border: none; border-top: 1px solid var(--color-line); margin: 3rem 0; }
-</style>

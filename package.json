@@ -1,7 +1,7 @@
 {
   "name": "myers-group-media",
   "type": "module",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "dev": "astro dev",
@@ -12,19 +12,11 @@
   },
   "dependencies": {
     "@astrojs/mdx": "^4.0.0",
-    "@astrojs/react": "^4.1.0",
     "@astrojs/sitemap": "^3.2.0",
+    "@fontsource-variable/inter": "^5.1.0",
+    "@fontsource-variable/sora": "^5.1.0",
     "@tailwindcss/vite": "^4.0.0",
     "astro": "^5.1.0",
-    "gsap": "^3.12.5",
-    "lenis": "^1.1.20",
-    "ogl": "^1.0.11",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
     "tailwindcss": "^4.0.0"
-  },
-  "devDependencies": {
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0"
   }
 }

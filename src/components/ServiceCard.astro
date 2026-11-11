@@ -1,0 +1,25 @@
+---
+import Icon from "@/components/Icon.astro";
+import type { Service } from "@/data/services";
+
+interface Props {
+  service: Service;
+  /** Override the link (used for local pages) */
+  href?: string;
+  /** Override the card title (e.g. "Web Design in Corinth") */
+  title?: string;
+  text?: string;
+}
+const { service, href = `/services/${service.slug}/`, title = service.name, text = service.short } = Astro.props;
+---
+
+<a href={href} class="card p-6 flex flex-col gap-4 group h-full">
+  <div class="icon-tile"><Icon name={service.icon} size={24} /></div>
+  <div>
+    <h3 class="h3 group-hover:text-brand transition-colors">{title}</h3>
+    <p class="mt-2 text-[0.98rem] leading-relaxed">{text}</p>
+  </div>
+  <div class="mt-auto inline-flex items-center gap-1.5 font-semibold text-brand text-[0.95rem]">
+    Learn more <Icon name="arrow" size={17} class="transition-transform group-hover:translate-x-1" />
+  </div>
+</a>

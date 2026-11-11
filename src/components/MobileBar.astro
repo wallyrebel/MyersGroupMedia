@@ -1,0 +1,21 @@
+---
+/** Always-visible Call / Email bar on phones and tablets. */
+import Icon from "@/components/Icon.astro";
+import { site, mailto } from "@/data/site";
+---
+
+<div
+  class="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur border-t border-line shadow-[0_-8px_24px_-12px_rgb(11_18_38/0.25)]"
+  style="padding-bottom: env(safe-area-inset-bottom);"
+>
+  <div class="grid grid-cols-2 gap-2.5 p-2.5">
+    <a href={site.phoneHref} class="btn btn-primary btn-sm !min-h-[3.25rem]" data-cta="call">
+      <Icon name="call" size={19} />
+      <span>Call</span>
+    </a>
+    <a href={mailto()} class="btn btn-dark btn-sm !min-h-[3.25rem]" data-cta="email">
+      <Icon name="mail" size={19} />
+      <span>Email</span>
+    </a>
+  </div>
+</div>

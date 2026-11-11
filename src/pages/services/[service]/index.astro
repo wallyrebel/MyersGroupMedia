@@ -1,0 +1,148 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/PageHero.astro";
+import Icon from "@/components/Icon.astro";
+import ServiceCard from "@/components/ServiceCard.astro";
+import WorkCard from "@/components/WorkCard.astro";
+import Faq from "@/components/Faq.astro";
+import { processSteps } from "@/data/site";
+import { services, serviceBySlug, type Service } from "@/data/services";
+import { localAreas, locationBySlug } from "@/data/locations";
+import { localTitle, localHref, relatedWork } from "@/lib/local";
+import { breadcrumbSchema, faqSchema, serviceSchema } from "@/lib/schema";
+
+export function getStaticPaths() {
+  return services.map((service) => ({ params: { service: service.slug }, props: { service } }));
+}
+
+interface Props {
+  service: Service;
+}
+const { service } = Astro.props;
+const region = locationBySlug("north-mississippi");
+const path = `/services/${service.slug}/`;
+const crumbs = [
+  { name: "Home", href: "/" },
+  { name: "Services", href: "/services/" },
+  { name: service.name, href: path },
+];
+const work = relatedWork(service.slug);
+const related = service.related.map(serviceBySlug);
+---
+
+<BaseLayout
+  title={`${localTitle[service.slug]} in North Mississippi`}
+  description={service.meta}
+  schema={[serviceSchema(service, null, path, service.meta), breadcrumbSchema(crumbs), faqSchema(service.faqs)]}
+  contact={{ heading: `Ready to talk about ${service.keyword}?`, subject: `${service.name} question for Myers Group Media` }}
+>
+  <PageHero
+    crumbs={crumbs}
+    eyebrow={`${localTitle[service.slug]} · North Mississippi`}
+    title={service.headline}
+    lead={service.intro[0]}
+    subject={`${service.name} question for Myers Group Media`}
+  />
+
+  <!-- What's included -->
+  <section class="section" aria-labelledby="included-heading">
+    <div class="wrap">
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-14">
+        <div class="lg:col-span-5">
+          <p class="eyebrow mb-3">What you get</p>
+          <h2 id="included-heading" class="h2">{localTitle[service.slug]} done right, start to finish</h2>
+          <p class="mt-4">{service.intro[1]}</p>
+          <p class="mt-4">{region.angles[service.slug]}</p>
+        </div>
+        <ul class="lg:col-span-7 grid sm:grid-cols-2 gap-4">
+          {service.includes.map((inc) => (
+            <li class="card p-5">
+              <h3 class="h3 flex items-start gap-2.5"><Icon name="check" size={20} class="text-brand mt-0.5 shrink-0" />{inc.title}</h3>
+              <p class="mt-2 text-[0.96rem]">{inc.text}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Good fit -->
+  <section class="section bg-surface" aria-labelledby="fit-heading">
+    <div class="wrap grid lg:grid-cols-2 gap-10 lg:gap-14 items-start">
+      <div>
+        <p class="eyebrow mb-3">Is this for you?</p>
+        <h2 id="fit-heading" class="h2">We can help if…</h2>
+        <ul class="mt-6 space-y-3.5">
+          {service.goodFit.map((g) => (
+            <li class="flex items-start gap-3 text-[1.05rem] text-ink">
+              <span class="grid place-items-center w-7 h-7 rounded-full bg-brand text-white shrink-0 mt-0.5"><Icon name="check" size={16} /></span>
+              {g}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <p class="eyebrow mb-3">How it works</p>
+        <h2 class="h2">Four simple steps</h2>
+        <ol class="mt-6 space-y-4">
+          {processSteps.map((step, i) => (
+            <li class="flex gap-4">
+              <span class="grid place-items-center w-9 h-9 rounded-full bg-white border-2 border-brand text-brand font-display font-bold shrink-0">{i + 1}</span>
+              <div>
+                <h3 class="h3">{step.title}</h3>
+                <p class="mt-1 text-[0.98rem]">{step.text}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- Work -->
+  <section class="section" aria-labelledby="work-heading">
+    <div class="wrap">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-10">
+        <div class="max-w-2xl">
+          <p class="eyebrow mb-3">Our work</p>
+          <h2 id="work-heading" class="h2">Recent projects</h2>
+        </div>
+        <a href="/work/" class="btn btn-outline btn-sm self-start md:self-auto">See all our work <Icon name="arrow" size={17} /></a>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {work.map((item) => <WorkCard item={item} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Local pages -->
+  <section class="section bg-surface" aria-labelledby="local-heading">
+    <div class="wrap">
+      <p class="eyebrow mb-3">Near you</p>
+      <h2 id="local-heading" class="h2 max-w-3xl">{localTitle[service.slug]} in your part of North Mississippi</h2>
+      <p class="mt-4 max-w-2xl">We serve businesses across the region. Choose your area for local details.</p>
+      <ul class="mt-7 grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        {localAreas.map((l) => (
+          <li>
+            <a href={localHref(service, l)} class="card card-link flex items-center justify-between gap-3 px-5 py-4 font-semibold text-ink hover:text-brand">
+              <span class="flex items-center gap-2.5"><Icon name="pin" size={18} class="text-brand shrink-0" />{service.name} in {l.full}</span>
+              <Icon name="arrow" size={17} class="text-brand shrink-0" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <Faq faqs={service.faqs} heading={`${service.name} questions, answered`} />
+
+  <!-- Related -->
+  <section class="section bg-surface" aria-labelledby="related-heading">
+    <div class="wrap">
+      <h2 id="related-heading" class="h2 mb-8">Often paired with</h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {related.map((s) => <ServiceCard service={s} />)}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

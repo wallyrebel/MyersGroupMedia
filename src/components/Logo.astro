@@ -1,0 +1,32 @@
+---
+/** Vector version of the Myers Group Media mark + wordmark. */
+interface Props {
+  tone?: "dark" | "light";
+  class?: string;
+}
+const { tone = "dark", class: cls = "" } = Astro.props;
+const word = tone === "light" ? "#ffffff" : "#0b1226";
+const silverA = tone === "light" ? "#ffffff" : "#8b96ad";
+const silverB = tone === "light" ? "#aab4c8" : "#4d5873";
+---
+
+<span class={`inline-flex items-center gap-2.5 ${cls}`}>
+  <svg width="44" height="36" viewBox="0 0 44 36" fill="none" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id={`mgm-s-${tone}`} x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color={silverA} />
+        <stop offset="1" stop-color={silverB} />
+      </linearGradient>
+      <linearGradient id={`mgm-b-${tone}`} x1="0" y1="1" x2="1" y2="0">
+        <stop offset="0" stop-color="#0c41b3" />
+        <stop offset="1" stop-color="#3d8bff" />
+      </linearGradient>
+    </defs>
+    <path d="M1 4l17 11.5v7L8.5 15.5V33L1 27.5V4z" fill={`url(#mgm-s-${tone})`} />
+    <path d="M43 1v26.5L35.5 34V15.5L22 26l-6.5-4.5L43 1z" fill={`url(#mgm-b-${tone})`} />
+  </svg>
+  <span class="flex flex-col leading-none">
+    <span style={`color:${word}`} class="font-display font-extrabold tracking-[0.06em] text-[1.18rem]">MYERS</span>
+    <span class="font-display font-bold tracking-[0.2em] text-[0.58rem] mt-1 text-brand-light" style={tone === "dark" ? "color:var(--color-brand)" : ""}>GROUP MEDIA</span>
+  </span>
+</span>

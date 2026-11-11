@@ -1,77 +1,90 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/PageHero.astro";
+import Icon from "@/components/Icon.astro";
 import { site } from "@/data/site";
-const yearsInBusiness = new Date().getFullYear() - site.founded;
+import { services } from "@/data/services";
+import { breadcrumbSchema } from "@/lib/schema";
+
+const crumbs = [
+  { name: "Home", href: "/" },
+  { name: "About", href: "/about/" },
+];
+const years = new Date().getFullYear() - site.founded;
+const values = [
+  { icon: "users", title: "One team, one call", text: "Most companies handle one slice. We handle web, hosting, apps, IT, marketing, design and software together, so the pieces actually connect." },
+  { icon: "bolt", title: "We do the work", text: "We do not hand over a slide deck and disappear. We build it, run it and keep improving it." },
+  { icon: "handshake", title: "Honest advice", text: "If you do not need an app, a rebuild or a bigger ad budget, we will say so. We would rather earn your trust than your invoice." },
+  { icon: "pin", title: "Local roots", text: "We are based in North Mississippi and we work with the businesses, schools and organizations that make these towns what they are." },
+];
 ---
 
-<BaseLayout title="About" description={`Founded by ${site.founder} in ${site.founded}, ${site.name} has spent nearly two decades growing brands online.`}>
-  <section class="container-xl pt-40 pb-20">
-    <div class="eyebrow mb-8">About</div>
-    <h1 class="display-1 max-w-[16ch]">
-      <span class="split-line"><span>An agency built on</span></span>
-      <span class="split-line"><span><em class="font-serif italic font-normal text-[color:var(--color-accent)]">eighteen years</em></span></span>
-      <span class="split-line"><span>of doing the work.</span></span>
-    </h1>
-  </section>
+<BaseLayout
+  title="About Us — North Mississippi Web, IT & Marketing"
+  description={`Founded by ${site.founder} in ${site.founded}, ${site.name} has spent ${years} years helping Mississippi businesses grow with websites, technology and marketing.`}
+  schema={[breadcrumbSchema(crumbs)]}
+>
+  <PageHero
+    crumbs={crumbs}
+    title={`Helping Mississippi businesses grow online since ${site.founded}`}
+    lead={`${site.name} was founded by ${site.founder} in ${site.founded}. ${years} years later we are still doing what we set out to do: making technology and marketing simple for local businesses.`}
+  />
 
-  <section class="container-xl py-24 border-t border-[color:var(--color-line)]">
-    <div class="grid lg:grid-cols-12 gap-12">
-      <div class="lg:col-span-4">
-        <div class="eyebrow sticky top-32">[ 01 ] Origin</div>
+  <section class="section">
+    <div class="wrap grid lg:grid-cols-12 gap-10 lg:gap-14">
+      <div class="lg:col-span-7 prose">
+        <h2>Our story</h2>
+        <p>
+          We started in {site.founded}, when search engine optimization was a niche skill, social media was a novelty and most local businesses still did not have a website. We learned the craft while the rules were being written, and we have kept up with every change since.
+        </p>
+        <p>
+          Along the way we have built brands and audiences to a combined <strong>one million social media followers</strong> and more than <strong>100 million views every month</strong>, and launched more than <strong>200 brands</strong>. Those are not vanity numbers. They are audiences that call, click, buy and show up.
+        </p>
+        <p>
+          Today we work with local service businesses, news and media networks, restaurants and gathering places, manufacturers and community organizations across North Mississippi. What connects them is simple: they want one dependable team to handle the technical side so they can get on with running the business.
+        </p>
+        <h2>What we do</h2>
+        <p>
+          We offer {services.length} services, and they are designed to work together:
+        </p>
+        <ul>
+          {services.map((s) => <li><a href={`/services/${s.slug}/`}>{s.name}</a> — {s.short.charAt(0).toLowerCase() + s.short.slice(1)}</li>)}
+        </ul>
       </div>
-      <div class="lg:col-span-8 space-y-8">
-        <p class="display-3 text-[color:var(--color-bone)] reveal">
-          Myers Group Media was founded by <em class="font-serif italic text-[color:var(--color-accent)]">{site.founder}</em> in {site.founded}.
-        </p>
-        <p class="text-lg lg:text-xl text-[color:var(--color-bone-dim)] leading-relaxed reveal">
-          For nearly twenty years, we've been doing online marketing and search engine optimization back when "SEO" was a niche skill, social media was a novelty, and most local businesses still didn't have a website. We learned the craft when the rules were being written — and we've kept rewriting them ever since.
-        </p>
-        <p class="text-lg lg:text-xl text-[color:var(--color-bone-dim)] leading-relaxed reveal">
-          We've grown brands and digital footprints to a combined audience of over <span class="text-[color:var(--color-bone)]">one million social media followers</span> and over <span class="text-[color:var(--color-bone)]">100 million social media views every month</span>. Those aren't vanity numbers. They're audiences that buy, click, share, and show up.
-        </p>
-        <p class="text-lg lg:text-xl text-[color:var(--color-bone-dim)] leading-relaxed reveal">
-          We work with local service businesses, regional media networks, hospitality brands, software startups, and everyone in between. The thread that connects them all: we don't just hand off a deliverable and disappear. We build the system, run the system, and grow the system.
-        </p>
-      </div>
-    </div>
-  </section>
 
-  <section class="container-xl py-32 border-t border-[color:var(--color-line)]">
-    <div class="grid md:grid-cols-3 gap-12">
-      {site.stats.map((s) => (
-        <div class="reveal">
-          <div class="display-2 font-display text-[color:var(--color-bone)] mb-3">{s.value}</div>
-          <div class="eyebrow">{s.label}</div>
-        </div>
-      ))}
-      <div class="reveal">
-        <div class="display-2 font-display text-[color:var(--color-bone)] mb-3">{yearsInBusiness}</div>
-        <div class="eyebrow">Years and counting</div>
-      </div>
-    </div>
-  </section>
-
-  <section class="container-xl py-24 border-t border-[color:var(--color-line)]">
-    <div class="grid lg:grid-cols-12 gap-12">
-      <div class="lg:col-span-4">
-        <div class="eyebrow sticky top-32">[ 02 ] How we work</div>
-      </div>
-      <div class="lg:col-span-8 space-y-12">
-        {[
-          { t: "One team, one bill", d: "Most agencies specialize in one slice. We handle web, app, software, social, ads, and SEO under one roof — so the work actually connects." },
-          { t: "Operators, not consultants", d: "We don't deliver decks and disappear. We build, run, and optimize the systems that actually move the numbers." },
-          { t: "Built for the algorithm age", d: "Every channel — search, social, paid — is governed by an algorithm. We design strategy around how those systems actually reward content." },
-          { t: "Local roots, national reach", d: "Headquartered in Mississippi, but the work and the audiences we build live everywhere." },
-        ].map((item, i) => (
-          <div class="reveal grid grid-cols-12 gap-4 pb-12 border-b border-[color:var(--color-line)]">
-            <div class="col-span-2 font-mono text-sm text-[color:var(--color-mist)]">0{i + 1}</div>
-            <div class="col-span-10">
-              <h3 class="display-3 mb-3">{item.t}</h3>
-              <p class="text-lg text-[color:var(--color-bone-dim)]">{item.d}</p>
+      <aside class="lg:col-span-5 space-y-5 self-start">
+        <dl class="card p-7 grid grid-cols-2 gap-6">
+          {site.stats.map((s) => (
+            <div class="flex flex-col-reverse">
+              <dt class="text-[0.9rem] text-muted mt-1">{s.label}</dt>
+              <dd class="font-display font-extrabold text-ink text-3xl tracking-tight">{s.value}</dd>
             </div>
-          </div>
-        ))}
+          ))}
+        </dl>
+        <div class="card p-7">
+          <h2 class="h3">Founder</h2>
+          <p class="mt-2"><strong class="text-ink">{site.founder}</strong> founded {site.name} in {site.founded} and still leads the work today.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section bg-surface" aria-labelledby="values-heading">
+    <div class="wrap">
+      <div class="max-w-3xl mb-10">
+        <p class="eyebrow mb-3">How we work</p>
+        <h2 id="values-heading" class="h2">What you can expect from us</h2>
       </div>
+      <ul class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {values.map((v) => (
+          <li class="card p-6">
+            <span class="icon-tile mb-4"><Icon name={v.icon} size={24} /></span>
+            <h3 class="h3">{v.title}</h3>
+            <p class="mt-2 text-[0.98rem]">{v.text}</p>
+          </li>
+        ))}
+      </ul>
+      <a href="/process/" class="link inline-block mt-8">See how a project works, step by step</a>
     </div>
   </section>
 </BaseLayout>

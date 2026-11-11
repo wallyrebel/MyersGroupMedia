@@ -1,199 +1,213 @@
 ---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Marquee from "@/components/Marquee.astro";
-import HeroCanvas from "@/components/HeroCanvas.tsx";
-import { site, services, portfolio } from "@/data/site";
+import Icon from "@/components/Icon.astro";
+import ContactButtons from "@/components/ContactButtons.astro";
+import ServiceCard from "@/components/ServiceCard.astro";
+import WorkCard from "@/components/WorkCard.astro";
+import Faq from "@/components/Faq.astro";
+import { site, portfolio, processSteps } from "@/data/site";
+import { services } from "@/data/services";
+import { locations } from "@/data/locations";
+import { faqSchema } from "@/lib/schema";
 
-const featuredWork = portfolio.slice(0, 4);
+const posts = (await getCollection("journal", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+const fmtDate = (d: Date) => d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" });
+
+const heroA = portfolio[0];
+const heroB = portfolio[2];
+
+const reasons = [
+  { icon: "users", title: "One team for everything", text: "Website, hosting, IT, marketing, design and software from the same people — so nothing falls between vendors and you make one call." },
+  { icon: "pin", title: "Local to North Mississippi", text: "We know these towns, these customers and what works here. You deal with neighbors, not a call center." },
+  { icon: "star", title: `In business since ${site.founded}`, text: "Nearly two decades of building websites and growing audiences, with more than 200 brands launched along the way." },
+  { icon: "handshake", title: "Straight answers, clear prices", text: "Plain English, a written price before work starts, and honest advice — including when you do not need to spend the money." },
+];
+
+const faqs = [
+  { q: "What does Myers Group Media do?", a: "We are a North Mississippi technology and marketing company. We design websites, provide web hosting, build apps and custom software, handle IT services, and run marketing, social media and graphic design for local businesses." },
+  { q: "What areas do you serve?", a: "We serve all of North Mississippi, including Corinth, Ripley, New Albany, Booneville, Tupelo, Oxford, Holly Springs, Iuka, Pontotoc, Tippah County and DeSoto County. We also work with clients elsewhere in Mississippi and beyond." },
+  { q: "How do I get a quote?", a: `Call ${site.phone} or click any “Email us” button — it opens your email with our address already filled in. Tell us what you need and we will reply, usually within one business day.` },
+  { q: "Do you work with small businesses?", a: "Yes. Most of our clients are small and mid-sized local businesses. You get a clear written price before any work starts." },
+  { q: "Can you take over a website, social media page or IT setup someone else started?", a: "Yes. We regularly take over existing websites, hosting, social media accounts and office technology. We will look at what you have and tell you honestly what is worth keeping." },
+];
 ---
 
-<BaseLayout>
-  <!-- ======================= HERO ======================= -->
-  <section class="relative min-h-[100svh] flex flex-col justify-center overflow-hidden pt-40 md:pt-32">
-    <HeroCanvas client:load />
-
-    <!-- top meta strip -->
-    <div class="absolute top-28 left-0 right-0 z-10">
-      <div class="container-xl flex justify-between items-center">
-        <div class="flex items-center gap-3 eyebrow">
-          <span class="inline-block w-1.5 h-1.5 rounded-full bg-[color:var(--color-accent)]" style="box-shadow: 0 0 0 0 var(--color-accent-glow); animation: pulse 2.4s infinite;"></span>
-          Est. {site.founded} · Mississippi · Worldwide
-        </div>
-        <div class="eyebrow hidden md:block">N 34.7° / W 88.9°</div>
-      </div>
-    </div>
-
-    <div class="container-xl pb-24 lg:pb-32 relative z-10">
-      <div class="eyebrow mb-8 reveal">A digital agency for the algorithm age</div>
-      <h1 class="display-1 max-w-[18ch] mb-12">
-        <span class="split-line"><span>We design,</span></span>
-        <span class="split-line"><span>build &amp; grow</span></span>
-        <span class="split-line"><span><em class="text-[color:var(--color-accent)]">brands</em> that</span></span>
-        <span class="split-line"><span>dominate online.</span></span>
-      </h1>
-
-      <div class="flex flex-col sm:flex-row gap-4 mb-16 reveal">
-        <a href="/contact" class="btn-primary">
-          Start a project
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-        </a>
-        <a href="/work" class="btn-ghost">
-          See our work
-          <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" stroke-width="1.4"/></svg>
-        </a>
-      </div>
-
-      <!-- Stats strip -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-px bg-[color:var(--color-line)] border-y border-[color:var(--color-line)] reveal stagger">
-        {site.stats.map((s) => (
-          <div class="bg-[color:var(--color-ink)] px-0 py-8 md:py-10 group">
-            <div class="display-3 font-display text-[color:var(--color-bone)] transition-colors duration-500 group-hover:text-[color:var(--color-accent)]">{s.value}</div>
-            <div class="eyebrow mt-3">{s.label}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-
-    <!-- scroll cue -->
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 z-10 opacity-70">
-      <span class="eyebrow text-[0.65rem]">Scroll</span>
-      <span class="block w-px h-10 bg-gradient-to-b from-[color:var(--color-bone-dim)] to-transparent"></span>
-    </div>
-  </section>
-
-  <!-- ======================= MARQUEE ======================= -->
-  <Marquee items={["Web Design", "Software", "Social Media", "Advertising", "SEO", "App Design", "Branding"]} />
-
-  <!-- ======================= INTRO ======================= -->
-  <section class="container-xl py-32 lg:py-48">
-    <div class="grid lg:grid-cols-12 gap-12">
-      <div class="lg:col-span-3">
-        <div class="eyebrow sticky top-32">[ 01 ] What we do</div>
-      </div>
-      <div class="lg:col-span-9">
-        <h2 class="display-2 mb-12 reveal">
-          We're a full-service digital agency that has spent <em class="text-[color:var(--color-accent)]">eighteen years</em> figuring out how to grow brands online — and we've gotten very good at it.
-        </h2>
-        <p class="text-lg lg:text-xl text-[color:var(--color-bone-dim)] max-w-2xl reveal leading-relaxed">
-          From local service businesses to statewide media networks, we build the website, run the ads, manage the socials, and write the software. One team. One bill.
+<BaseLayout
+  title={`North Mississippi Web Design, IT & Marketing | ${site.name}`}
+  description="Web design, hosting, apps, IT, marketing, social media, graphic design and custom software for North Mississippi businesses. Call (662) 576-1554."
+  schema={[faqSchema(faqs)]}
+>
+  <!-- Hero -->
+  <section class="bg-hero border-b border-line overflow-hidden">
+    <div class="wrap pt-10 pb-14 lg:pt-16 lg:pb-20 grid lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+      <div class="lg:col-span-7">
+        <p class="eyebrow mb-5"><Icon name="pin" size={16} />Serving North Mississippi since {site.founded}</p>
+        <h1 class="h1">Web design, IT &amp; marketing for <span class="text-brand">North Mississippi</span> businesses</h1>
+        <p class="lead mt-5 max-w-2xl">
+          We build websites, apps and software, look after your hosting and IT, and run the marketing that brings local customers through your door. One local team for all of it.
         </p>
+        <ContactButtons class="mt-8" />
+        <ul class="mt-7 flex flex-wrap gap-x-6 gap-y-2 text-[0.96rem] font-semibold text-ink">
+          {["Clear prices up front", "Plain-English answers", "A real person replies"].map((t) => (
+            <li class="flex items-center gap-2"><Icon name="check" size={18} class="text-brand" />{t}</li>
+          ))}
+        </ul>
       </div>
-    </div>
-  </section>
 
-  <!-- ======================= SERVICES ======================= -->
-  <section class="container-xl py-24 border-t border-[color:var(--color-line)]">
-    <div class="flex justify-between items-end mb-16 gap-6">
-      <div>
-        <div class="eyebrow mb-4">[ 02 ] Capabilities</div>
-        <h2 class="display-2 max-w-[14ch]">Six services. <em class="text-[color:var(--color-accent)]">One</em> system.</h2>
-      </div>
-      <a href="/services" class="link-arrow hidden md:inline-flex shrink-0">
-        All services
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" stroke-width="1.4"/></svg>
-      </a>
-    </div>
-
-    <div class="border-t border-[color:var(--color-line)]">
-      {services.map((s) => (
-        <a href={`/services/${s.slug}`} class="group relative block border-b border-[color:var(--color-line)] py-8 lg:py-10 transition-colors duration-500 hover:bg-[color:var(--color-ink-2)]">
-          <!-- accent bar slides in -->
-          <span class="absolute left-0 top-0 bottom-0 w-px bg-[color:var(--color-accent)] origin-top scale-y-0 group-hover:scale-y-100 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"></span>
-          <div class="container-xl !px-0 grid grid-cols-12 gap-4 items-center">
-            <div class="col-span-2 lg:col-span-1 font-mono text-sm text-[color:var(--color-mist)] transition-colors duration-500 group-hover:text-[color:var(--color-accent)]">{s.number}</div>
-            <div class="col-span-10 lg:col-span-5">
-              <div class="display-3 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-3 group-hover:text-[color:var(--color-accent)]">{s.title}</div>
+      <div class="lg:col-span-5 relative" aria-hidden="true">
+        <div class="relative mx-auto max-w-md lg:max-w-none">
+          <div class="card overflow-hidden rotate-[1.5deg] shadow-[var(--shadow-lift)]">
+            <div class="flex items-center gap-1.5 px-3.5 py-2.5 border-b border-line">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#e3e8f1]"></span><span class="w-2.5 h-2.5 rounded-full bg-[#e3e8f1]"></span><span class="w-2.5 h-2.5 rounded-full bg-[#e3e8f1]"></span>
             </div>
-            <div class="hidden lg:block lg:col-span-5 text-[color:var(--color-bone-dim)]">{s.short}</div>
-            <div class="hidden lg:flex lg:col-span-1 justify-end">
-              <svg width="20" height="20" viewBox="0 0 14 14" fill="none" class="text-[color:var(--color-mist)] transition-all duration-500 group-hover:translate-x-2 group-hover:-translate-y-1 group-hover:text-[color:var(--color-accent)]"><path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" stroke-width="1.2"/></svg>
-            </div>
+            <Image src={heroA.image} alt="" widths={[480, 760, 960]} sizes="(min-width: 1024px) 480px, 90vw" loading="eager" fetchpriority="high" class="w-full aspect-[16/10] object-cover object-top" />
           </div>
-        </a>
-      ))}
-    </div>
-
-    <div class="md:hidden pt-10">
-      <a href="/services" class="link-arrow">
-        All services
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" stroke-width="1.4"/></svg>
-      </a>
-    </div>
-  </section>
-
-  <!-- ======================= WORK ======================= -->
-  <section class="container-xl py-32 lg:py-48">
-    <div class="flex justify-between items-end mb-16 gap-6">
-      <div>
-        <div class="eyebrow mb-4">[ 03 ] Selected work</div>
-        <h2 class="display-2 max-w-[18ch]">Brands we've <em class="text-[color:var(--color-accent)]">launched</em> and grown.</h2>
-      </div>
-      <a href="/work" class="link-arrow hidden md:inline-flex shrink-0">
-        All work
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" stroke-width="1.4"/></svg>
-      </a>
-    </div>
-
-    <div class="grid md:grid-cols-2 gap-6 lg:gap-10">
-      {featuredWork.map((p, i) => (
-        <a href={p.url} target="_blank" rel="noopener" class={`group block reveal ${i % 2 === 1 ? "md:translate-y-16" : ""}`}>
-          <div class="aspect-[4/3] bg-[color:var(--color-ink-2)] border border-[color:var(--color-line)] group-hover:border-[color:var(--color-accent)] overflow-hidden relative transition-all duration-700">
-            {p.image && <img src={p.image} alt={p.name} loading="lazy" class="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.06]" />}
-            <!-- legibility gradient, lighter baseline -->
-            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/40 opacity-80 group-hover:opacity-60 transition-opacity duration-700"></div>
-            <!-- subtle accent wash on hover -->
-            <div class="absolute inset-0 bg-[color:var(--color-accent)] opacity-0 group-hover:opacity-[0.06] transition-opacity duration-700 mix-blend-overlay"></div>
-
-            <div class="absolute top-6 left-6 right-6 flex justify-between font-mono text-[0.72rem] uppercase tracking-[0.15em] text-[color:var(--color-bone)]">
-              <span class="inline-flex items-center gap-2">
-                <span class="inline-block w-1 h-1 rounded-full bg-[color:var(--color-accent)]"></span>
-                {p.category}
-              </span>
-              <span>{p.year}</span>
-            </div>
-
-            <div class="absolute bottom-6 left-6 right-6">
-              <div class="display-3 text-[color:var(--color-bone)] mb-2 group-hover:text-[color:var(--color-accent)] transition-colors duration-500">{p.name}</div>
-              <div class="flex justify-between items-end">
-                <span class="font-mono text-[0.72rem] uppercase tracking-[0.15em] text-[color:var(--color-bone-dim)]">{p.domain}</span>
-                <span class="inline-flex items-center justify-center w-10 h-10 rounded-full border border-[color:var(--color-bone)]/30 group-hover:border-[color:var(--color-accent)] group-hover:bg-[color:var(--color-accent)] transition-all duration-500">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="text-[color:var(--color-bone)] transition-all duration-500 group-hover:text-[color:var(--color-ink)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"><path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" stroke-width="1.4"/></svg>
-                </span>
-              </div>
-            </div>
+          <div class="card overflow-hidden absolute -bottom-8 -left-3 sm:-left-8 w-[52%] -rotate-[4deg] shadow-[var(--shadow-lift)]">
+            <Image src={heroB.image} alt="" widths={[260, 420]} sizes="240px" loading="eager" class="w-full aspect-[16/10] object-cover object-top" />
           </div>
-        </a>
-      ))}
-    </div>
-
-    <div class="md:hidden pt-10">
-      <a href="/work" class="link-arrow">
-        All work
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" stroke-width="1.4"/></svg>
-      </a>
-    </div>
-  </section>
-
-  <!-- ======================= CTA ======================= -->
-  <section class="container-xl py-32 border-t border-[color:var(--color-line)]">
-    <div class="grid lg:grid-cols-12 gap-12">
-      <div class="lg:col-span-3">
-        <div class="eyebrow">[ 04 ] Next move</div>
-      </div>
-      <div class="lg:col-span-9">
-        <h2 class="display-2 mb-12 reveal max-w-[20ch]">
-          You bring the <em class="text-[color:var(--color-accent)]">ambition</em>. We'll bring the eighteen years of getting it right.
-        </h2>
-        <div class="flex flex-col sm:flex-row gap-4 reveal">
-          <a href="/contact" class="btn-primary">
-            Let's talk
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 13L13 1M13 1H4M13 1V10" stroke="currentColor" stroke-width="1.4"/></svg>
-          </a>
-          <a href={`mailto:${site.email}`} class="btn-ghost">
-            {site.email}
-          </a>
+          <div class="absolute -top-4 -right-2 sm:-right-4 card px-4 py-3 flex items-center gap-3 shadow-[var(--shadow-lift)]">
+            <span class="icon-tile !w-10 !h-10"><Icon name="chart" size={20} /></span>
+            <span class="leading-tight">
+              <span class="block font-display font-extrabold text-ink text-lg">200+</span>
+              <span class="block text-[0.8rem] text-muted">brands launched</span>
+            </span>
+          </div>
         </div>
       </div>
     </div>
   </section>
+
+  <!-- Proof strip -->
+  <section aria-label="Myers Group Media by the numbers" class="border-b border-line">
+    <dl class="wrap grid grid-cols-2 lg:grid-cols-4">
+      {site.stats.map((s, i) => (
+        <div class={`py-7 px-2 text-center flex flex-col-reverse ${i % 2 === 1 ? "border-l border-line" : ""} ${i >= 2 ? "border-t lg:border-t-0 border-line" : ""} ${i === 2 ? "lg:border-l" : ""}`}>
+          <dt class="text-[0.9rem] text-muted mt-1">{s.label}</dt>
+          <dd class="font-display font-extrabold text-ink text-3xl lg:text-4xl tracking-tight">{s.value}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <!-- Services -->
+  <section class="section bg-surface" aria-labelledby="services-heading">
+    <div class="wrap">
+      <div class="max-w-3xl mb-10">
+        <p class="eyebrow mb-3">What we do</p>
+        <h2 id="services-heading" class="h2">Everything your business needs online, from one local team</h2>
+        <p class="lead mt-4">Pick what you need today. Add the rest when you are ready.</p>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {services.map((s) => <ServiceCard service={s} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Why us -->
+  <section class="section" aria-labelledby="why-heading">
+    <div class="wrap grid lg:grid-cols-12 gap-10 lg:gap-14">
+      <div class="lg:col-span-4">
+        <p class="eyebrow mb-3">Why Myers Group Media</p>
+        <h2 id="why-heading" class="h2">A local partner that makes technology simple</h2>
+        <p class="mt-4">
+          Most businesses juggle a web person, an IT person and a marketing person who never talk to each other. We put it all under one roof, and we answer the phone.
+        </p>
+        <a href="/about/" class="link inline-block mt-5">More about us</a>
+      </div>
+      <ul class="lg:col-span-8 grid sm:grid-cols-2 gap-5">
+        {reasons.map((r) => (
+          <li class="card p-6">
+            <span class="icon-tile mb-4"><Icon name={r.icon} size={24} /></span>
+            <h3 class="h3">{r.title}</h3>
+            <p class="mt-2 text-[0.98rem]">{r.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Work -->
+  <section class="section bg-surface" aria-labelledby="work-heading">
+    <div class="wrap">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-10">
+        <div class="max-w-2xl">
+          <p class="eyebrow mb-3">Our work</p>
+          <h2 id="work-heading" class="h2">Built for businesses and organizations you know</h2>
+        </div>
+        <a href="/work/" class="btn btn-outline btn-sm self-start md:self-auto">See all our work <Icon name="arrow" size={17} /></a>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {portfolio.slice(0, 3).map((item) => <WorkCard item={item} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section class="section" aria-labelledby="process-heading">
+    <div class="wrap">
+      <div class="max-w-3xl mb-10">
+        <p class="eyebrow mb-3">How it works</p>
+        <h2 id="process-heading" class="h2">Simple from the first call to launch day</h2>
+      </div>
+      <ol class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {processSteps.map((step, i) => (
+          <li class="card p-6">
+            <span class="grid place-items-center w-10 h-10 rounded-full bg-brand text-white font-display font-bold mb-4">{i + 1}</span>
+            <h3 class="h3">{step.title}</h3>
+            <p class="mt-2 text-[0.98rem]">{step.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Areas -->
+  <section class="section bg-surface" aria-labelledby="areas-heading">
+    <div class="wrap grid lg:grid-cols-12 gap-10">
+      <div class="lg:col-span-5">
+        <p class="eyebrow mb-3">Areas we serve</p>
+        <h2 id="areas-heading" class="h2">Serving businesses all across North Mississippi</h2>
+        <p class="mt-4">
+          From Corinth and Iuka in the northeast to Oxford and DeSoto County in the northwest, we work with businesses in every corner of the region. Choose your area to see how we can help.
+        </p>
+        <a href="/areas/" class="link inline-block mt-5">View all service areas</a>
+      </div>
+      <ul class="lg:col-span-7 flex flex-wrap gap-2.5 content-start">
+        {locations.map((l) => (
+          <li><a href={`/areas/${l.slug}/`} class="chip"><Icon name="pin" size={16} class="text-brand" />{l.full}</a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Blog -->
+  {posts.length > 0 && (
+    <section class="section" aria-labelledby="blog-heading">
+      <div class="wrap">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-10">
+          <div class="max-w-2xl">
+            <p class="eyebrow mb-3">From the blog</p>
+            <h2 id="blog-heading" class="h2">Straight talk on websites, marketing and technology</h2>
+          </div>
+          <a href="/journal/" class="btn btn-outline btn-sm self-start md:self-auto">Read the blog <Icon name="arrow" size={17} /></a>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6">
+          {posts.map((p) => (
+            <a href={`/journal/${p.id}/`} class="card p-6 flex flex-col gap-3 group">
+              <p class="text-[0.85rem] text-muted">{fmtDate(p.data.date)}{p.data.category && <> · {p.data.category}</>}</p>
+              <h3 class="h3 group-hover:text-brand transition-colors">{p.data.title}</h3>
+              <p class="text-[0.96rem] line-clamp-3">{p.data.excerpt}</p>
+              <span class="mt-auto pt-2 inline-flex items-center gap-1.5 font-semibold text-brand text-[0.95rem]">Read article <Icon name="arrow" size={17} /></span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <Faq faqs={faqs} heading="Questions we hear a lot" intro="Do not see yours? Call or email — we are happy to answer." />
 </BaseLayout>

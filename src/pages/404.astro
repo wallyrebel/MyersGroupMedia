@@ -1,0 +1,25 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Icon from "@/components/Icon.astro";
+import ContactButtons from "@/components/ContactButtons.astro";
+import { services } from "@/data/services";
+---
+
+<BaseLayout title="Page Not Found" description="Sorry, that page could not be found. Call (662) 576-1554 or email Myers Group Media and we will point you the right way." noindex>
+  <section class="bg-hero border-b border-line">
+    <div class="wrap py-16 lg:py-24 max-w-3xl">
+      <p class="eyebrow mb-4">Error 404</p>
+      <h1 class="h1">Sorry, we can't find that page</h1>
+      <p class="lead mt-5">It may have moved when we rebuilt the site. Here are the most useful places to go next — or just call or email and we will point you the right way.</p>
+      <ContactButtons class="mt-8" />
+      <ul class="mt-10 flex flex-wrap gap-2.5">
+        <li><a href="/" class="chip"><Icon name="arrow" size={16} class="text-brand" />Home</a></li>
+        {services.map((s) => (
+          <li><a href={`/services/${s.slug}/`} class="chip"><Icon name={s.icon} size={16} class="text-brand" />{s.name}</a></li>
+        ))}
+        <li><a href="/areas/" class="chip"><Icon name="pin" size={16} class="text-brand" />Areas we serve</a></li>
+        <li><a href="/work/" class="chip">Our work</a></li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

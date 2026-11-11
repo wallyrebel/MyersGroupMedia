@@ -1,0 +1,43 @@
+---
+import { Image } from "astro:assets";
+import Icon from "@/components/Icon.astro";
+import type { PortfolioItem } from "@/data/site";
+
+interface Props {
+  item: PortfolioItem;
+  eager?: boolean;
+}
+const { item, eager = false } = Astro.props;
+---
+
+<article class="card overflow-hidden flex flex-col h-full">
+  <a href={item.url} target="_blank" rel="noopener" class="block bg-surface border-b border-line group" aria-label={`Visit ${item.name} (opens in a new tab)`}>
+    <div class="flex items-center gap-1.5 px-3.5 py-2.5 bg-white border-b border-line">
+      <span class="w-2.5 h-2.5 rounded-full bg-[#e3e8f1]"></span>
+      <span class="w-2.5 h-2.5 rounded-full bg-[#e3e8f1]"></span>
+      <span class="w-2.5 h-2.5 rounded-full bg-[#e3e8f1]"></span>
+      <span class="ml-2 text-[0.78rem] text-muted truncate">{item.domain}</span>
+    </div>
+    <div class="overflow-hidden aspect-[16/10]">
+      <Image
+        src={item.image}
+        alt={`Screenshot of the ${item.name} website`}
+        widths={[400, 640, 960]}
+        sizes="(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw"
+        loading={eager ? "eager" : "lazy"}
+        class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+      />
+    </div>
+  </a>
+  <div class="p-6 flex flex-col gap-3 flex-1">
+    <p class="text-[0.82rem] font-semibold uppercase tracking-wider text-muted">{item.category}</p>
+    <h3 class="h3">{item.name}</h3>
+    <p class="text-[0.98rem]">{item.description}</p>
+    <ul class="flex flex-wrap gap-1.5 mt-1">
+      {item.services.map((s) => <li class="tag">{s}</li>)}
+    </ul>
+    <a href={item.url} target="_blank" rel="noopener" class="mt-auto pt-3 inline-flex items-center gap-1.5 font-semibold text-brand text-[0.95rem] hover:underline underline-offset-4">
+      Visit {item.domain} <Icon name="external" size={16} />
+    </a>
+  </div>
+</article>

@@ -1,0 +1,124 @@
+---
+/** Area pages — e.g. /areas/corinth-ms/ — everything we do in one town or county. */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/PageHero.astro";
+import Icon from "@/components/Icon.astro";
+import ServiceCard from "@/components/ServiceCard.astro";
+import WorkCard from "@/components/WorkCard.astro";
+import Faq from "@/components/Faq.astro";
+import { services } from "@/data/services";
+import { locations, localIndustries, type Location } from "@/data/locations";
+import { localTitle, localHref, areaFaqs, areaWork } from "@/lib/local";
+import { breadcrumbSchema, faqSchema } from "@/lib/schema";
+
+export function getStaticPaths() {
+  return locations.map((loc) => ({ params: { location: loc.slug }, props: { loc } }));
+}
+
+interface Props {
+  loc: Location;
+}
+const { loc } = Astro.props;
+const path = `/areas/${loc.slug}/`;
+const crumbs = [
+  { name: "Home", href: "/" },
+  { name: "Areas We Serve", href: "/areas/" },
+  { name: loc.full, href: path },
+];
+const faqs = areaFaqs(loc);
+const work = areaWork(loc);
+const others = locations.filter((l) => l.slug !== loc.slug);
+const isRegion = loc.kind === "region";
+const description = `Web design, hosting, IT, marketing, social media, graphic design, apps and custom software in ${loc.full}. Call (662) 576-1554.`;
+const industries = localIndustries[loc.slug] ?? [];
+const subject = `Question from ${loc.name}`;
+---
+
+<BaseLayout
+  title={isRegion ? "North Mississippi Service Area — Web, IT & Marketing" : `Web Design, IT & Marketing in ${loc.full}`}
+  description={description}
+  schema={[breadcrumbSchema(crumbs), faqSchema(faqs)]}
+  contact={{ heading: `Let's talk about your ${loc.name} business`, subject }}
+>
+  <PageHero
+    crumbs={crumbs}
+    eyebrow={loc.kind === "city" ? `${loc.county}, Mississippi` : "Mississippi"}
+    title={isRegion ? "Web design, IT & marketing across North Mississippi" : `Web design, IT & marketing in ${loc.full}`}
+    lead={loc.about[1]}
+    subject={subject}
+  />
+
+  <!-- About the area -->
+  <section class="section" aria-labelledby="about-heading">
+    <div class="wrap grid lg:grid-cols-12 gap-10 lg:gap-14">
+      <div class="lg:col-span-7">
+        <p class="eyebrow mb-3">About the area</p>
+        <h2 id="about-heading" class="h2">Proud to serve {loc.long}</h2>
+        <p class="mt-4 text-[1.08rem]">{loc.about[0]}</p>
+        <h3 class="font-display font-bold text-ink mt-7 mb-3">Communities we serve {loc.kind === "city" ? `around ${loc.name}` : `in ${loc.name}`}</h3>
+        <ul class="flex flex-wrap gap-2">
+          {loc.kind === "city" && <li class="tag">{loc.name}</li>}
+          {loc.communities.map((c) => <li class="tag">{c}</li>)}
+        </ul>
+      </div>
+      <aside class="lg:col-span-5 card p-7 self-start">
+        <h3 class="h3 mb-4">{loc.name} is known for</h3>
+        <ul class="space-y-3">
+          {loc.knownFor.map((k) => (
+            <li class="flex items-start gap-2.5"><Icon name="check" size={19} class="text-brand mt-1 shrink-0" />{k}</li>
+          ))}
+        </ul>
+        <h3 class="h3 mt-7 mb-4">Who we work with here</h3>
+        <ul class="space-y-3">
+          {industries.map((k) => (
+            <li class="flex items-start gap-2.5"><Icon name="check" size={19} class="text-brand mt-1 shrink-0" />{k}</li>
+          ))}
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Services here -->
+  <section class="section bg-surface" aria-labelledby="services-heading">
+    <div class="wrap">
+      <div class="max-w-3xl mb-10">
+        <p class="eyebrow mb-3">What we do here</p>
+        <h2 id="services-heading" class="h2">Our services in {loc.name}</h2>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {services.map((s) => (
+          <ServiceCard service={s} href={localHref(s, loc)} title={`${localTitle[s.slug]} in ${loc.name}`} text={loc.angles[s.slug]} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Work -->
+  <section class="section" aria-labelledby="work-heading">
+    <div class="wrap">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-10">
+        <div class="max-w-2xl">
+          <p class="eyebrow mb-3">Our work</p>
+          <h2 id="work-heading" class="h2">Recent North Mississippi projects</h2>
+        </div>
+        <a href="/work/" class="btn btn-outline btn-sm self-start md:self-auto">See all our work <Icon name="arrow" size={17} /></a>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {work.map((item) => <WorkCard item={item} />)}
+      </div>
+    </div>
+  </section>
+
+  <Faq faqs={faqs} heading={`Working with us in ${loc.name}`} />
+
+  <section class="section bg-surface" aria-labelledby="others-heading">
+    <div class="wrap">
+      <h2 id="others-heading" class="h3 !text-[1.4rem] mb-5">Other areas we serve</h2>
+      <ul class="flex flex-wrap gap-2.5">
+        {others.map((l) => (
+          <li><a href={`/areas/${l.slug}/`} class="chip"><Icon name="pin" size={16} class="text-brand" />{l.full}</a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

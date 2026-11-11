@@ -1,0 +1,28 @@
+---
+/**
+ * The two ways to reach us, as big buttons: tap to call, click to email.
+ * The email button opens the visitor's own email app, already addressed.
+ */
+import Icon from "@/components/Icon.astro";
+import { site, mailto } from "@/data/site";
+
+interface Props {
+  subject?: string;
+  tone?: "light" | "dark";
+  class?: string;
+}
+const { subject, tone = "light", class: cls = "" } = Astro.props;
+const callClass = tone === "dark" ? "btn btn-white" : "btn btn-primary";
+const mailClass = tone === "dark" ? "btn btn-ghost-light" : "btn btn-outline";
+---
+
+<div class={`flex flex-col sm:flex-row gap-3 ${cls}`}>
+  <a href={site.phoneHref} class={callClass} data-cta="call">
+    <Icon name="call" size={20} />
+    <span>Call {site.phone}</span>
+  </a>
+  <a href={mailto(subject)} class={mailClass} data-cta="email">
+    <Icon name="mail" size={20} />
+    <span>Email us</span>
+  </a>
+</div>
